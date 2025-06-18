@@ -1,0 +1,1299 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HR Dashboard</title>
+    <style>
+        /* Base styles */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: #f0f4f8;
+            color: #212529;
+            line-height: 1.6;
+        }
+
+        .container {
+            width: 95%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 1rem;
+        }
+
+        /* Typography */
+        h1, h2, h3 {
+            margin-bottom: 0.75rem;
+            color: #007bff;
+        }
+
+        h1 {
+            font-size: 1.8rem;
+            text-align: center;
+        }
+
+        h2 {
+            font-size: 1.3rem;
+        }
+
+        h3 {
+            font-size: 1.1rem;
+        }
+
+        /* Card styles */
+        .card {
+            background: #ffffff;
+            border-radius: 1rem;
+            padding: 1.25rem;
+            margin-bottom: 1rem;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border: 1px solid #ced4da;
+        }
+
+        /* Stats grid */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .stat-card {
+            background: #ffffff;
+            border-radius: 0.75rem;
+            padding: 1rem;
+            text-align: center;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            border: 1px solid #007bff;
+        }
+
+        .stat-card h3 {
+            margin: 0;
+            font-size: 1rem;
+            color: #007bff;
+        }
+
+        .stat-card p {
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin: 0.5rem 0 0;
+            color: #212529;
+        }
+
+        /* Filters */
+        .filters {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-bottom: 1rem;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .filters select,
+        .filters input {
+            padding: 0.5rem;
+            border: 1px solid #ced4da;
+            border-radius: 0.75rem;
+            font-size: 0.9rem;
+            background: #f8f9fa;
+            transition: all 0.2s ease;
+        }
+
+        .filters input {
+            width: 300px;
+        }
+
+        .filters select:focus,
+        .filters input:focus {
+            border-color: #007bff;
+            outline: none;
+            box-shadow: 0 0 3px rgba(0, 123, 255, 0.5);
+        }
+
+        .filter-left {
+            display: flex;
+            align-items: center;
+        }
+
+        .filter-right {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        /* Table styles */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 1rem;
+            background: #ffffff;
+            border-radius: 0.75rem;
+            overflow: hidden;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        th, td {
+            padding: 0.75rem;
+            text-align: left;
+            border-bottom: 1px solid #dee2e6;
+        }
+
+        th {
+            background: #007bff;
+            color: #ffffff;
+            font-weight: bold;
+        }
+
+        tr:hover {
+            background: #f8f9fa;
+        }
+
+        /* Status highlight */
+        .status-pending {
+            background-color: #fff3cd;
+            color: #856404;
+            padding: 0.2rem 0.5rem;
+            border-radius: 0.25rem;
+        }
+
+        .status-approved {
+            background-color: #d4edda;
+            color: #155724;
+            padding: 0.2rem 0.5rem;
+            border-radius: 0.25rem;
+        }
+
+        .status-rejected {
+            background-color: #f8d7da;
+            color: #721c24;
+            padding: 0.2rem 0.5rem;
+            border-radius: 0.25rem;
+        }
+
+        .status-completed {
+            background-color: #d1ecf1;
+            color: #0c5460;
+            padding: 0.2rem 0.5rem;
+            border-radius: 0.25rem;
+        }
+
+        .status-incomplete {
+            background-color: #e2e3e5;
+            color: #383d41;
+            padding: 0.2rem 0.5rem;
+            border-radius: 0.25rem;
+        }
+
+        /* Status dropdown styles */
+        .status-select {
+            padding: 0.4rem 0.6rem;
+            border: 1px solid #ced4da;
+            border-radius: 0.5rem;
+            font-size: 0.85rem;
+            background: #ffffff;
+            color: #212529;
+            width: 120px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23707070' d='M6 8.5L2 4.5h8z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 0.5rem center;
+            background-size: 10px;
+        }
+
+        .status-select:hover {
+            border-color: #007bff;
+            background-color: #f8f9fa;
+        }
+
+        .status-select:focus {
+            outline: none;
+            border-color: #007bff;
+            box-shadow: 0 0 3px rgba(0, 123, 255, 0.5);
+        }
+
+        .status-select option {
+            background: #ffffff;
+            color: #212529;
+        }
+
+        .status-select option[value="pending"] {
+            background-color: #fff3cd;
+            color: #856404;
+        }
+
+        .status-select option[value="approved"] {
+            background-color: #d4edda;
+            color: #155724;
+        }
+
+        .status-select option[value="rejected"] {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+
+        .status-select option[value="completed"] {
+            background-color: #d1ecf1;
+            color: #0c5460;
+        }
+
+        .status-select option[value="incomplete"] {
+            background-color: #e2e3e5;
+            color: #383d41;
+        }
+
+        /* Disabled select styles */
+        .status-select:disabled {
+            background: #e9ecef;
+            cursor: not-allowed;
+            opacity: 0.7;
+        }
+
+        /* Buttons */
+        button {
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 0.75rem;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.2s ease;
+            font-weight: bold;
+        }
+
+        .btn-primary {
+            background: #007bff;
+            color: #ffffff;
+        }
+
+        .btn-primary:hover {
+            background: #0056b3;
+            transform: translateY(-2px);
+        }
+
+        .btn-danger {
+            background: #dc3545;
+            color: #ffffff;
+        }
+
+        .btn-danger:hover {
+            background: #c82333;
+            transform: translateY(-2px);
+        }
+
+        .btn-action {
+            background: #28a745;
+            color: #ffffff;
+            margin-right: 0.5rem;
+        }
+
+        .btn-action:hover {
+            background: #218838;
+            transform: translateY(-2px);
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .modal-content {
+            background: #ffffff;
+            border-radius: 1rem;
+            padding: 1.5rem;
+            max-width: 800px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+            margin: auto;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            position: relative;
+        }
+
+        .close {
+            position: absolute;
+            top: 0.5rem;
+            right: 0.75rem;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #dc3545;
+        }
+
+        .close:hover {
+            color: #c82333;
+        }
+
+        /* Document styles */
+        .document-link {
+            color: #007bff;
+            text-decoration: none;
+            margin-right: 0.5rem;
+        }
+
+        .document-link:hover {
+            text-decoration: underline;
+        }
+
+        /* Document Viewer Modal */
+        .document-viewer-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 2000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .document-viewer-content {
+            background: white;
+            margin: auto;
+            padding: 1rem;
+            max-width: 90%;
+            max-height: 90vh;
+            border-radius: 8px;
+            overflow: auto;
+            position: relative;
+        }
+
+        .document-viewer-content img,
+        .document-viewer-content iframe {
+            max-width: 100%;
+            max-height: 80vh;
+        }
+
+        .close-viewer-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            font-size: 1.5rem;
+            cursor: pointer;
+            border: none;
+            background: none;
+        }
+
+        /* Document Item */
+        .document-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 0.75rem;
+            flex-wrap: wrap;
+        }
+
+        .document-item span {
+            flex: 1;
+            min-width: 150px;
+            font-size: 0.9rem;
+        }
+
+        .document-btn {
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 500;
+            font-size: 0.9rem;
+            min-width: 80px;
+            text-align: center;
+        }
+
+        .view-document-btn {
+            background: #28a745;
+            color: white;
+        }
+
+        .download-document-btn {
+            background: #007bff;
+            color: white;
+        }
+
+        /* Responsive styles */
+        @media (max-width: 768px) {
+            .container {
+                padding: 0.75rem;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .filters {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .filter-right {
+                width: 100%;
+                justify-content: flex-end;
+            }
+
+            .filters select,
+            .filters input {
+                width: 100%;
+            }
+
+            table {
+                font-size: 0.85rem;
+            }
+
+            th, td {
+                padding: 0.5rem;
+            }
+
+            .modal-content {
+                width: 95%;
+                padding: 1rem;
+            }
+
+            .status-select {
+                width: 100%;
+            }
+        }
+
+        @media (max-width: 480px) {
+            h1 {
+                font-size: 1.5rem;
+            }
+
+            h2 {
+                font-size: 1.1rem;
+            }
+
+            h3 {
+                font-size: 1rem;
+            }
+
+            .stat-card p {
+                font-size: 1.2rem;
+            }
+
+            button {
+                padding: 0.4rem 0.8rem;
+                font-size: 0.85rem;
+            }
+
+            .modal-content {
+                padding: 0.75rem;
+            }
+
+            .filters input {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>HR Dashboard</h1>
+        <div class="stats-grid">
+            <div class="stat-card">
+                <h3>Total Employees</h3>
+                <p id="total-employees">0</p>
+            </div>
+            <div class="stat-card">
+                <h3>Pending</h3>
+                <p id="pending-count">0</p>
+            </div>
+            <div class="stat-card">
+                <h3>Completed</h3>
+                <p id="completed-count">0</p>
+            </div>
+            <div class="stat-card">
+                <h3>Incomplete</h3>
+                <p id="incomplete-count">0</p>
+            </div>
+        </div>
+
+        <div class="filters">
+            <div class="filter-left">
+                <input type="text" id="name-filter" placeholder="Filter by name...">
+            </div>
+            <div class="filter-right">
+                <select id="status-filter">
+                    <option value="all">All Statuses</option>
+                    <option value="pending">Pending</option>
+                    <option value="completed">Completed</option>
+                    <option value="incomplete">Incomplete</option>
+                </select>
+                <button class="btn-danger" id="clear-records">Clear All Records</button>
+            </div>
+        </div>
+
+        <div class="card">
+            <table id="employee-table">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Status</th>
+                        <th>Submission Date</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+    </div>
+
+    <div id="employeeModal" class="modal">
+        <div class="modal-content">
+            <span class="close">×</span>
+            <h2>Employee Details</h2>
+            <div id="employeeDetails"></div>
+        </div>
+    </div>
+
+    <div id="documentViewerModal" class="document-viewer-modal">
+        <div class="document-viewer-content">
+            <button class="close-viewer-btn">×</button>
+            <div id="documentViewer"></div>
+        </div>
+    </div>
+
+    <script>
+        let employees = [];
+        let filteredEmployees = [];
+
+        // Validate base64 string
+        function isValidBase64(str) {
+            try {
+                if (!str || typeof str !== 'string') return false;
+                const base64Part = str.startsWith('data:') ? str.split(',')[1] : str;
+                atob(base64Part);
+                return true;
+            } catch (e) {
+                console.error('Invalid base64 string:', e);
+                return false;
+            }
+        }
+
+        // Normalize data URI
+        function normalizeDataUri(data, mimeType) {
+            if (!data || !mimeType) return null;
+            if (data.startsWith(`data:${mimeType};base64,`)) {
+                return data;
+            }
+            const base64Data = data.startsWith('data:') ? data.split(',')[1] : data;
+            if (!isValidBase64(base64Data)) {
+                console.error('Cannot normalize invalid base64 data');
+                return null;
+            }
+            return `data:${mimeType};base64,${base64Data}`;
+        }
+
+        // Fetch employees with retry and timeout
+        async function fetchEmployees(retry = true) {
+            try {
+                const controller = new AbortController();
+                const timeoutId = setTimeout(() => controller.abort(), 5000);
+
+                const response = await fetch('http://localhost:3000/api/employees', {
+                    method: 'GET',
+                    headers: { 'Content-Type': 'application/json' },
+                    signal: controller.signal
+                });
+
+                clearTimeout(timeoutId);
+
+                if (!response.ok) {
+                    let errorText;
+                    try {
+                        errorText = await response.text();
+                    } catch {
+                        errorText = 'No response body';
+                    }
+                    throw new Error(`HTTP ${response.status}: ${errorText || 'Unknown error'}`);
+                }
+
+                const contentType = response.headers.get('content-type');
+                if (!contentType || !contentType.includes('application/json')) {
+                    throw new Error('Invalid response format: Expected JSON');
+                }
+
+                employees = await response.json();
+                // Ensure status_updated is set to false if not provided by backend
+                employees = employees.map(emp => ({
+                    ...emp,
+                    status_updated: emp.status_updated ?? false
+                }));
+                console.log('Fetched employees:', employees);
+                filteredEmployees = [...employees];
+                updateStats();
+                renderEmployeeTable();
+            } catch (error) {
+                console.error('Error fetching employees:', error.stack);
+
+                if (retry && (error.name === 'AbortError' || error.message.includes('Failed to fetch'))) {
+                    console.log('Retrying fetch after 2 seconds...');
+                    setTimeout(() => fetchEmployees(false), 2000);
+                    return;
+                }
+
+                let userMessage = 'Failed to load employee data: ';
+                if (error.name === 'AbortError') {
+                    userMessage += 'Request timed out. The server at http://localhost:3000 may be down or slow.';
+                } else if (error.message.includes('Failed to fetch')) {
+                    userMessage += 'Cannot connect to the server. Ensure the backend is running at http://localhost:3000.';
+                } else if (error.message.includes('HTTP 500')) {
+                    userMessage += 'Server error. Check the backend logs for database or server issues.';
+                } else if (error.message.includes('Invalid response format')) {
+                    userMessage += 'Server returned invalid data. Verify the backend API configuration.';
+                } else {
+                    userMessage += error.message;
+                }
+
+                alert(userMessage);
+            }
+        }
+
+        // Fetch single employee
+        async function fetchEmployee(employeeId) {
+            try {
+                const controller = new AbortController();
+                const timeoutId = setTimeout(() => controller.abort(), 5000);
+
+                const response = await fetch(`http://localhost:3000/api/employees/${employeeId}`, {
+                    method: 'GET',
+                    headers: { 'Content-Type': 'application/json' },
+                    signal: controller.signal
+                });
+
+                clearTimeout(timeoutId);
+
+                if (!response.ok) {
+                    let errorText;
+                    try {
+                        errorText = await response.text();
+                    } catch {
+                        errorText = 'No response body';
+                    }
+                    throw new Error(`HTTP ${response.status}: ${errorText || 'Employee not found'}`);
+                }
+
+                const contentType = response.headers.get('content-type');
+                if (!contentType || !contentType.includes('application/json')) {
+                    throw new Error('Invalid response format: Expected JSON');
+                }
+
+                const employee = await response.json();
+                // Ensure status_updated is set to false if not provided
+                employee.status_updated = employee.status_updated ?? false;
+                console.log('Fetched employee:', employee);
+                return employee;
+            } catch (error) {
+                console.error('Error fetching employee:', error.stack);
+                throw error;
+            }
+        }
+
+        // Update statistics
+        function updateStats() {
+            document.getElementById('total-employees').textContent = filteredEmployees.length;
+            document.getElementById('pending-count').textContent = filteredEmployees.filter(emp => emp.status === 'pending').length;
+            document.getElementById('completed-count').textContent = filteredEmployees.filter(emp => emp.status === 'completed').length;
+            document.getElementById('incomplete-count').textContent = filteredEmployees.filter(emp => emp.status === 'incomplete').length;
+        }
+
+        // Render employee table
+        function renderEmployeeTable() {
+            const tbody = document.querySelector('#employee-table tbody');
+            tbody.innerHTML = '';
+
+            filteredEmployees.forEach(employee => {
+                const row = document.createElement('tr');
+                // Check if status has been updated
+                const isStatusLocked = employee.status_updated || false;
+                row.innerHTML = `
+                    <td>${employee.name}</td>
+                    <td>${employee.email}</td>
+                    <td>
+                        ${
+                            isStatusLocked
+                                ? `<span class="status-${employee.status}">${employee.status.charAt(0).toUpperCase() + employee.status.slice(1)}</span>`
+                                : `
+                                    <select class="status-select" data-id="${employee.id}">
+                                        <option value="pending" ${employee.status === 'pending' ? 'selected' : ''}>Pending</option>
+                                        <option value="completed" ${employee.status === 'completed' ? 'selected' : ''}>Completed</option>
+                                        <option value="incomplete" ${employee.status === 'incomplete' ? 'selected' : ''}>Incomplete</option>
+                                    </select>
+                                `
+                        }
+                    </td>
+                    <td>${new Date(employee.submission_date).toLocaleDateString()}</td>
+                    <td>
+                        <button class="btn-action" onclick="viewEmployee(${employee.id})">View</button>
+                    </td>
+                `;
+                tbody.appendChild(row);
+            });
+
+            document.querySelectorAll('.status-select').forEach(select => {
+                select.addEventListener('change', (e) => {
+                    const employeeId = e.target.dataset.id;
+                    const newStatus = e.target.value;
+                    updateStatus(employeeId, newStatus, e.target);
+                });
+            });
+        }
+
+        // View employee details
+        async function viewEmployee(employeeId) {
+            try {
+                const employee = await fetchEmployee(employeeId);
+                console.log('Employee workHistory:', JSON.stringify(employee.workHistory, null, 2));
+
+                const detailsDiv = document.getElementById('employeeDetails');
+                detailsDiv.innerHTML = `
+                    <h3>Personal Information</h3>
+                    <p><strong>Name:</strong> ${employee.name || 'N/A'}</p>
+                    <p><strong>Father's Name:</strong> ${employee.father_name || 'N/A'}</p>
+                    <p><strong>Date of Birth:</strong> ${employee.dob ? new Date(employee.dob).toLocaleDateString() : 'N/A'}</p>
+                    <p><strong>Email:</strong> ${employee.email || 'N/A'}</p>
+                    <p><strong>Alternate Email:</strong> ${employee.alt_email || 'N/A'}</p>
+                    <p><strong>Mobile:</strong> ${employee.mobile || 'N/A'}</p>
+                    <p><strong>Alternate Mobile:</strong> ${employee.alt_mobile || 'N/A'}</p>
+                    <p><strong>Aadhar:</strong> ${employee.aadhar || 'N/A'}</p>
+                    <p><strong>PAN:</strong> ${employee.pan || 'N/A'}</p>
+
+                    <h3>Address</h3>
+                    <h4>Permanent Address</h4>
+                    <p><strong>Street:</strong> ${employee.permanent_street || 'N/A'}</p>
+                    <p><strong>City:</strong> ${employee.permanent_city || 'N/A'}</p>
+                    <p><strong>State:</strong> ${employee.permanent_state || 'N/A'}</p>
+                    <p><strong>Zipcode:</strong> ${employee.permanent_zipcode || 'N/A'}</p>
+                    <p><strong>Country:</strong> ${employee.permanent_country || 'N/A'}</p>
+                    <h4>Current Address</h4>
+                    <p><strong>Street:</strong> ${employee.current_street || 'N/A'}</p>
+                    <p><strong>City:</strong> ${employee.current_city || 'N/A'}</p>
+                    <p><strong>State:</strong> ${employee.current_state || 'N/A'}</p>
+                    <p><strong>Zipcode:</strong> ${employee.current_zipcode || 'N/A'}</p>
+                    <p><strong>Country:</strong> ${employee.current_country || 'N/A'}</p>
+
+                    <h3>Education</h3>
+                    ${
+                        Array.isArray(employee.education) && employee.education.length > 0
+                            ? employee.education
+                                  .map(
+                                      (edu, index) => `
+                                        <div class="card">
+                                            <p><strong>Level:</strong> ${edu.level?.toUpperCase() || 'N/A'}</p>
+                                            <p><strong>Stream:</strong> ${edu.stream || 'N/A'}</p>
+                                            <p><strong>Institution:</strong> ${edu.institution || 'N/A'}</p>
+                                            <p><strong>Board:</strong> ${edu.board || 'N/A'}</p>
+                                            <p><strong>Year of Passing:</strong> ${edu.year_of_passing || 'N/A'}</p>
+                                            <p><strong>Percentage:</strong> ${edu.percentage || 'N/A'}%</p>
+                                        </div>
+                                    `
+                                  )
+                                  .join('')
+                            : '<p>No education details available.</p>'
+                    }
+
+                    <h3>Work History</h3>
+                    ${
+                        Array.isArray(employee.workHistory) && employee.workHistory.length > 0
+                            ? employee.workHistory
+                                  .map(
+                                      (work, index) => `
+                                        <div class="card">
+                                            <p><strong>Experience Type:</strong> ${work.experience_type?.charAt(0).toUpperCase() + work.experience_type?.slice(1) || 'N/A'}</p>
+                                            ${
+                                                work.experience_type === 'experienced'
+                                                    ? `
+                                                        <p><strong>Company Name:</strong> ${work.company_name || 'N/A'}</p>
+                                                        <p><strong>Designation:</strong> ${work.designation || 'N/A'}</p>
+                                                        <p><strong>Employment Period:</strong> ${work.employment_period || 'N/A'} years</p>
+                                                        <p><strong>Location:</strong> ${work.location || 'N/A'}</p>
+                                                        <p><strong>Reason for Leaving:</strong> ${work.reason_for_leaving || 'N/A'}</p>
+                                                    `
+                                                    : ''
+                                            }
+                                        </div>
+                                    `
+                                  )
+                                  .join('')
+                            : '<p>No work history available.</p>'
+                    }
+
+                    <h3>Bank Details</h3>
+                    <p><strong>Account Holder Name:</strong> ${employee.account_holder_name || 'N/A'}</p>
+                    <p><strong>Bank Name:</strong> ${employee.bank_name || 'N/A'}</p>
+                    <p><strong>Account Number:</strong> ${employee.account_number || 'N/A'}</p>
+                    <p><strong>IFSC Code:</strong> ${employee.ifsc_code || 'N/A'}</p>
+                    <p><strong>Bank Branch:</strong> ${employee.bank_branch || 'N/A'}</p>
+                    <p><strong>Account Type:</strong> ${employee.account_type?.charAt(0).toUpperCase() + employee.account_type?.slice(1) || 'N/A'}</p>
+
+                    <h3>Documents</h3>
+                    <div class="detail-item">
+                        <strong>Aadhar Document:</strong>
+                        ${
+                            employee.documents?.aadhar?.data
+                                ? `
+                                    <div class="document-item">
+                                        <span>${employee.documents.aadhar.name || 'Aadhar Document'}</span>
+                                        <button class="document-btn view-document-btn" onclick="viewDocument(${employee.id}, 'aadhar', -1, -1)">View</button>
+                                        <button class="document-btn download-document-btn" onclick="downloadDocument(${employee.id}, 'aadhar', -1, -1)">Download</button>
+                                    </div>
+                                `
+                                : 'Not Uploaded'
+                        }
+                    </div>
+                    <div class="detail-item">
+                        <strong>PAN Document:</strong>
+                        ${
+                            employee.documents?.pan?.data
+                                ? `
+                                    <div class="document-item">
+                                        <span>${employee.documents.pan.name || 'PAN Document'}</span>
+                                        <button class="document-btn view-document-btn" onclick="viewDocument(${employee.id}, 'pan', -1, -1)">View</button>
+                                        <button class="document-btn download-document-btn" onclick="downloadDocument(${employee.id}, 'pan', -1, -1)">Download</button>
+                                    </div>
+                                `
+                                : 'Not Uploaded'
+                        }
+                    </div>
+                    <div class="detail-item">
+                        <strong>Education Certificates:</strong>
+                        ${
+                            Array.isArray(employee.education) && employee.education.length > 0
+                                ? employee.education
+                                      .map(
+                                          (edu, index) =>
+                                              edu.certificate?.data
+                                                  ? `
+                                                    <div class="document-item">
+                                                        <span>${edu.certificate.name || `Certificate for ${edu.level || 'Education'}`}</span>
+                                                        <button class="document-btn view-document-btn" onclick="viewDocument(${employee.id}, 'education', ${index}, -1)">View</button>
+                                                        <button class="document-btn download-document-btn" onclick="downloadDocument(${employee.id}, 'education', ${index}, -1)">Download</button>
+                                                    </div>
+                                                `
+                                                  : '<div>Not Uploaded</div>'
+                                      )
+                                      .join('')
+                                : '<div>No education certificates available.</div>'
+                        }
+                    </div>
+                    <div class="detail-item">
+                        <strong>Work Documents:</strong>
+                        ${
+                            Array.isArray(employee.workHistory) && employee.workHistory.length > 0
+                                ? employee.workHistory
+                                      .map(
+                                          (work, workIndex) =>
+                                              Array.isArray(work.documents) && work.documents.length > 0
+                                                  ? work.documents
+                                                        .map(
+                                                            (doc, docIndex) =>
+                                                                doc.data
+                                                                    ? `
+                                                                        <div class="document-item">
+                                                                            <span>${doc.name || `Work Document ${docIndex + 1}`}</span>
+                                                                            <button class="document-btn view-document-btn" onclick="viewDocument(${employee.id}, 'work', ${workIndex}, ${docIndex})">View</button>
+                                                                            <button class="document-btn download-document-btn" onclick="downloadDocument(${employee.id}, 'work', ${workIndex}, ${docIndex})">Download</button>
+                                                                        </div>
+                                                                    `
+                                                                    : '<div>Not Uploaded</div>'
+                                                        )
+                                                        .join('')
+                                                  : '<div>No work documents uploaded.</div>'
+                                      )
+                                      .join('')
+                                : '<div>No work documents available.</div>'
+                        }
+                    </div>
+
+                    <h3>Status</h3>
+                    <p><strong>Current Status:</strong> ${employee.status?.charAt(0).toUpperCase() + employee.status?.slice(1) || 'N/A'}</p>
+                    <p><strong>Submission Date:</strong> ${employee.submission_date ? new Date(employee.submission_date).toLocaleString() : 'N/A'}</p>
+                `;
+
+                const existingIndex = employees.findIndex(e => e.id === employee.id);
+                if (existingIndex !== -1) {
+                    employees[existingIndex] = employee;
+                } else {
+                    employees.push(employee);
+                }
+                filteredEmployees = [...employees];
+                updateStats();
+                renderEmployeeTable();
+
+                document.getElementById('employeeModal').style.display = 'block';
+            } catch (error) {
+                console.error('Error viewing employee:', error.stack);
+                alert(`Failed to load employee details: ${error.name === 'AbortError' ? 'Request timed out. Check server availability.' : error.message}`);
+            }
+        }
+
+        // Update employee status
+        async function updateStatus(employeeId, newStatus, selectElement) {
+            try {
+                const controller = new AbortController();
+                const timeoutId = setTimeout(() => controller.abort(), 5000);
+
+                const response = await fetch(`http://localhost:3000/api/employees/${employeeId}/status`, {
+                    method: 'PATCH',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ status: newStatus, status_updated: true }),
+                    signal: controller.signal
+                });
+
+                clearTimeout(timeoutId);
+
+                if (!response.ok) {
+                    let errorText;
+                    try {
+                        errorText = await response.text();
+                    } catch {
+                        errorText = 'No response body';
+                    }
+                    throw new Error(`HTTP ${response.status}: ${errorText || 'Status update failed'}`);
+                }
+
+                const result = await response.json();
+                employees = employees.map(emp => emp.id == employeeId ? { ...emp, status: newStatus, status_updated: true } : emp);
+                filteredEmployees = filteredEmployees.map(emp => emp.id == employeeId ? { ...emp, status: newStatus, status_updated: true } : emp);
+                selectElement.disabled = true; // Disable the select element
+                updateStats();
+                renderEmployeeTable();
+                alert('Status updated successfully. Further changes are not allowed.');
+            } catch (error) {
+                console.error('Error updating status:', error.stack);
+                alert(`Failed to update status: ${error.name === 'AbortError' ? 'Request timed out. Check server availability.' : error.message}`);
+                renderEmployeeTable();
+            }
+        }
+
+        // Filter employees
+        function filterEmployees() {
+            const statusFilter = document.getElementById('status-filter').value;
+            const nameFilter = document.getElementById('name-filter').value.toLowerCase();
+
+            filteredEmployees = employees.filter(employee => {
+                const matchesStatus = statusFilter === 'all' || employee.status === statusFilter;
+                const matchesName = employee.name.toLowerCase().includes(nameFilter);
+                return matchesStatus && matchesName;
+            });
+
+            updateStats();
+            renderEmployeeTable();
+        }
+
+        // Clear all records
+        async function clearRecords() {
+            if (confirm('Are you sure you want to permanently delete all employee records? This action cannot be undone.')) {
+                try {
+                    const controller = new AbortController();
+                    const timeoutId = setTimeout(() => controller.abort(), 5000);
+
+                    const response = await fetch('http://localhost:3000/api/employees', {
+                        method: 'DELETE',
+                        headers: { 'Content-Type': 'application/json' },
+                        signal: controller.signal
+                    });
+
+                    clearTimeout(timeoutId);
+
+                    if (!response.ok) {
+                        let errorText;
+                        try {
+                            errorText = await response.text();
+                        } catch {
+                            errorText = 'No response body';
+                        }
+                        throw new Error(`HTTP ${response.status}: ${errorText || 'Deletion failed'}`);
+                    }
+
+                    employees = [];
+                    filteredEmployees = [];
+                    updateStats();
+                    renderEmployeeTable();
+                    alert('All employee records have been permanently deleted.');
+                } catch (error) {
+                    console.error('Error deleting records:', error.stack);
+                    alert(`Failed to delete records: ${error.name === 'AbortError' ? 'Request timed out. Check server availability.' : error.message}`);
+                }
+            }
+        }
+
+        // Base64 to Blob conversion
+        function base64ToBlob(base64, contentType) {
+            try {
+                console.log('Converting base64 to blob, contentType:', contentType);
+                let base64Data = base64;
+                if (base64.startsWith('data:')) {
+                    base64Data = base64.split(',')[1];
+                }
+                if (!isValidBase64(base64Data)) {
+                    throw new Error('Invalid base64 data');
+                }
+                const byteCharacters = atob(base64Data);
+                const byteArrays = [];
+
+                for (let offset = 0; offset < byteCharacters.length; offset += 512) {
+                    const slice = byteCharacters.slice(offset, offset + 512);
+                    const byteNumbers = new Array(slice.length);
+                    for (let i = 0; i < slice.length; i++) {
+                        byteNumbers[i] = slice.charCodeAt(i);
+                    }
+                    const byteArray = new Uint8Array(byteNumbers);
+                    byteArrays.push(byteArray);
+                }
+
+                return new Blob(byteArrays, { type: contentType });
+            } catch (e) {
+                console.error('Error converting base64 to blob:', e);
+                return null;
+            }
+        }
+
+        // View document
+        async function viewDocument(employeeId, docType, index, docIndex) {
+            try {
+                console.log('viewDocument called:', { employeeId, docType, index, docIndex });
+                let employee = employees.find(e => e.id === employeeId);
+                if (!employee) {
+                    console.log('Employee not in local array, fetching from backend:', employeeId);
+                    employee = await fetchEmployee(employeeId);
+                    const existingIndex = employees.findIndex(e => e.id === employee.id);
+                    if (existingIndex !== -1) {
+                        employees[existingIndex] = employee;
+                    } else {
+                        employees.push(employee);
+                    }
+                }
+
+                if (!employee || !employee.documents) {
+                    console.error('Employee or documents not found:', employeeId, employee);
+                    alert(`Employee or documents not found for ID ${employeeId}.`);
+                    return;
+                }
+
+                let docData;
+                if (docType === 'aadhar') {
+                    docData = employee.documents.aadhar;
+                } else if (docType === 'pan') {
+                    docData = employee.documents.pan;
+                } else if (docType === 'education') {
+                    if (!Array.isArray(employee.education) || !employee.education[index]) {
+                        console.error('Education entry not found:', { index, education: employee.education });
+                        alert(`Education certificate not found for index ${index}.`);
+                        return;
+                    }
+                    docData = employee.education[index].certificate;
+                } else if (docType === 'work') {
+                    if (!Array.isArray(employee.workHistory)) {
+                        console.error('Work history not an array:', employee.workHistory);
+                        alert('No work history available.');
+                        return;
+                    }
+                    if (!employee.workHistory[index]) {
+                        console.error('Work history entry not found:', { index, workHistory: employee.workHistory });
+                        alert(`Work history entry not found for index ${index}.`);
+                        return;
+                    }
+                    if (!Array.isArray(employee.workHistory[index].documents)) {
+                        console.error('Work documents not an array:', { workIndex: index, documents: employee.workHistory[index].documents });
+                        alert(`No documents available for work history index ${index}.`);
+                        return;
+                    }
+                    if (!employee.workHistory[index].documents[docIndex]) {
+                        console.error('Work document not found:', { workIndex: index, docIndex, documents: employee.workHistory[index].documents });
+                        alert(`Work document not found for work index ${index}, document index ${docIndex}.`);
+                        return;
+                    }
+                    docData = employee.workHistory[index].documents[docIndex];
+                }
+
+                if (!docData || !docData.data) {
+                    console.error('Document data not found:', { docType, index, docIndex, docData });
+                    alert(`Document data not found for ${docType}.`);
+                    return;
+                }
+
+                console.log('Document data:', docData);
+
+                const mimeType = docData.type || 'application/octet-stream';
+                const normalizedData = normalizeDataUri(docData.data, mimeType);
+                if (!normalizedData) {
+                    console.error('Failed to normalize document data:', { docData, mimeType });
+                    alert(`Invalid document data format for ${docType}.`);
+                    return;
+                }
+                console.log('Normalized data URI:', normalizedData.substring(0, 50) + '...');
+
+                const viewer = document.getElementById('documentViewer');
+                viewer.innerHTML = '';
+
+                if (mimeType === 'application/pdf') {
+                    const iframe = document.createElement('iframe');
+                    iframe.src = normalizedData;
+                    iframe.style.width = '100%';
+                    iframe.style.height = '80vh';
+                    viewer.appendChild(iframe);
+                    console.log('Set iframe src:', iframe.src.substring(0, 50) + '...');
+                } else if (mimeType.startsWith('image/')) {
+                    const img = document.createElement('img');
+                    img.src = normalizedData;
+                    img.style.maxWidth = '100%';
+                    img.style.maxHeight = '80vh';
+                    viewer.appendChild(img);
+                    console.log('Set img src:', img.src.substring(0, 50) + '...');
+                } else {
+                    console.error('Unsupported MIME type:', mimeType);
+                    viewer.innerHTML = '<p>Unsupported document format.</p>';
+                    alert(`Unsupported document format for ${docType}.`);
+                    return;
+                }
+
+                document.getElementById('documentViewerModal').style.display = 'block';
+            } catch (error) {
+                console.error('Error viewing document:', error.stack);
+                alert('Failed to view document: ' + error.message);
+            }
+        }
+
+        // Download document
+        async function downloadDocument(employeeId, docType, index, docIndex) {
+            try {
+                console.log('downloadDocument called:', { employeeId, docType, index, docIndex });
+                let employee = employees.find(e => e.id === employeeId);
+                if (!employee) {
+                    console.log('Employee not in local array, fetching from backend:', employeeId);
+                    employee = await fetchEmployee(employeeId);
+                    const existingIndex = employees.findIndex(e => e.id === employee.id);
+                    if (existingIndex !== -1) {
+                        employees[existingIndex] = employee;
+                    } else {
+                        employees.push(employee);
+                    }
+                }
+
+                if (!employee || !employee.documents) {
+                    console.error('Employee or documents not found:', employeeId, employee);
+                    alert(`Employee or documents not found for ID ${employeeId}.`);
+                    return;
+                }
+
+                let docData;
+                if (docType === 'aadhar') {
+                    docData = employee.documents.aadhar;
+                } else if (docType === 'pan') {
+                    docData = employee.documents.pan;
+                } else if (docType === 'education') {
+                    if (!Array.isArray(employee.education) || !employee.education[index]) {
+                        console.error('Education entry not found:', { index, education: employee.education });
+                        alert(`Education certificate not found for index ${index}.`);
+                        return;
+                    }
+                    docData = employee.education[index].certificate;
+                } else if (docType === 'work') {
+                    if (!Array.isArray(employee.workHistory)) {
+                        console.error('Work history not an array:', employee.workHistory);
+                        alert('No work history available.');
+                        return;
+                    }
+                    if (!employee.workHistory[index]) {
+                        console.error('Work history entry not found:', { index, workHistory: employee.workHistory });
+                        alert(`Work history entry not found for index ${index}.`);
+                        return;
+                    }
+                    if (!Array.isArray(employee.workHistory[index].documents)) {
+                        console.error('Work documents not an array:', { workIndex: index, documents: employee.workHistory[index].documents });
+                        alert(`No documents available for work history index ${index}.`);
+                        return;
+                    }
+                    if (!employee.workHistory[index].documents[docIndex]) {
+                        console.error('Work document not found:', { workIndex: index, docIndex, documents: employee.workHistory[index].documents });
+                        alert(`Work document not found for work index ${index}, document index ${docIndex}.`);
+                        return;
+                    }
+                    docData = employee.workHistory[index].documents[docIndex];
+                }
+
+                if (!docData || !docData.data) {
+                    console.error('Document data not found:', { docType, index, docIndex, docData });
+                    alert(`Document data not found for ${docType}.`);
+                    return;
+                }
+
+                console.log('Document data:', docData);
+
+                const mimeType = docData.type || 'application/octet-stream';
+                const extension = mimeType.split('/')[1] || 'bin';
+                console.log('MIME type:', mimeType, 'Extension:', extension);
+
+                const blob = base64ToBlob(docData.data, mimeType);
+                if (!blob) {
+                    console.error('Failed to create blob for document');
+                    alert(`Failed to process document for download: ${docType}.`);
+                    return;
+                }
+
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = docData.name || `${docType}_document_${docIndex + 1}.${extension}`;
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+            } catch (error) {
+                console.error('Error downloading document:', error.stack);
+                alert('Failed to download document: ' + error.message);
+            }
+        }
+
+        // Close document viewer
+        function closeDocumentViewer() {
+            document.getElementById('documentViewerModal').style.display = 'none';
+            document.getElementById('documentViewer').innerHTML = '';
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            document.getElementById('employeeModal').style.display = 'none';
+            document.getElementById('documentViewerModal').style.display = 'none';
+            
+            fetchEmployees();
+
+            document.getElementById('status-filter').addEventListener('change', filterEmployees);
+            document.getElementById('name-filter').addEventListener('input', filterEmployees);
+            document.getElementById('clear-records').addEventListener('click', clearRecords);
+
+            document.querySelector('.close').addEventListener('click', () => {
+                document.getElementById('employeeModal').style.display = 'none';
+            });
+
+            document.getElementById('employeeModal').addEventListener('click', (e) => {
+                if (e.target === document.getElementById('employeeModal')) {
+                    document.getElementById('employeeModal').style.display = 'none';
+                }
+            });
+
+            document.querySelector('.close-viewer-btn').addEventListener('click', closeDocumentViewer);
+            document.getElementById('documentViewerModal').addEventListener('click', (e) => {
+                if (e.target === document.getElementById('documentViewerModal')) {
+                    closeDocumentViewer();
+                }
+            });
+        });
+    </script>
+</body>
+</html>

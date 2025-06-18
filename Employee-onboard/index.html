@@ -1,0 +1,2110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Onboarding Form</title>
+    <style>
+        /* Base styles */
+        body {
+            background: #f0f4f8;
+            color: #212529;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            min-height: 100vh;
+            margin: 0;
+            padding: 0;
+            line-height: 1.4;
+        }
+
+        .container {
+            width: 95%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 1rem;
+            position: relative;
+        }
+
+        .section-heading {
+            font-size: 1.3rem;
+            font-weight: bold;
+            margin-bottom: 0.75rem;
+            color: #007bff;
+            text-transform: uppercase;
+            position: relative;
+            padding-bottom: 3px;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);
+            display: inline-block;
+        }
+
+        .section-heading::after {
+            content: "";
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background-color: #007bff;
+        }
+
+        /* Button Styles */
+        button {
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 1rem;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.2s ease;
+            font-weight: bold;
+        }
+
+        button.outline {
+            background: transparent;
+            border: 2px solid #007bff;
+            color: #007bff;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        button.outline:hover {
+            background-color: #007bff;
+            color: #ffffff;
+            transform: translateY(-2px);
+        }
+
+        button.primary {
+            background: linear-gradient(45deg, #0056b3, #0069d9);
+            color: #ffffff;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.12);
+        }
+
+        button.primary:hover {
+            background: linear-gradient(45deg, #0069d9, #0056b3);
+            transform: translateY(-2px);
+        }
+
+        /* Input Fields */
+        .field-group {
+            margin-bottom: 0.75rem;
+        }
+
+        .field-group input,
+        .field-group select {
+            width: 100%;
+            padding: 0.5rem;
+            border: 1px solid #ced4da;
+            border-radius: 0.75rem;
+            font-size: 0.9rem;
+            background-color: #f8f9fa;
+            transition: all 0.2s ease;
+            box-sizing: border-box;
+        }
+
+        .field-group input[type="file"] {
+            padding: 0.5rem;
+            border: 1px solid #ced4da;
+            border-radius: 0.75rem;
+            background-color: #f8f9fa;
+        }
+
+        .field-group input:focus,
+        .field-group select:focus {
+            border-color: #007bff;
+            outline: none;
+            box-shadow: 0 0 3px rgba(0, 123, 255, 0.5);
+        }
+
+        /* File upload note */
+        .field-group small {
+            color: #6c757d;
+            font-size: 0.75rem;
+            display: block;
+            margin-top: 0.25rem;
+        }
+
+        /* Card Styles */
+        .card {
+            background: #ffffff;
+            border-radius: 1rem;
+            padding: 1.25rem;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border: 1px solid #ced4da;
+            margin-bottom: 1rem;
+            animation: cardAppear 0.3s ease-out forwards;
+        }
+
+        @keyframes cardAppear {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Education Section */
+        .education-entry {
+            background: #ffffff;
+            border-radius: 0.75rem;
+            padding: 0.75rem;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+            border: 1px solid #ced4da;
+            margin-bottom: 0.75rem;
+            position: relative;
+        }
+
+        .education-entry .field-group {
+            margin-bottom: 0.5rem;
+        }
+
+        .education-entry input,
+        .education-entry select {
+            width: 100%;
+            padding: 0.5rem;
+            border: 1px solid #ced4da;
+            border-radius: 0.75rem;
+            font-size: 0.9rem;
+            background-color: #f8f9fa;
+            transition: all 0.2s ease;
+            box-sizing: border-box;
+        }
+
+        .education-entry input:focus,
+        .education-entry select:focus {
+            border-color: #007bff;
+            outline: none;
+            box-shadow: 0 0 3px rgba(0, 123, 255, 0.5);
+        }
+
+        /* Work History */
+        .work-history-entry {
+            margin-bottom: 0.75rem;
+            border: 1px solid #ced4da;
+            padding: 0.75rem;
+            border-radius: 0.75rem;
+            position: relative;
+        }
+
+        /* Actions */
+        .actions {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 1rem;
+            gap: 0.5rem;
+        }
+
+        .add-section {
+            background: #007bff;
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 0.75rem;
+            font-size: 0.9rem;
+            transition: opacity 0.2s ease;
+        }
+
+        .add-section:hover {
+            opacity: 0.9;
+        }
+
+        .add-section:disabled {
+            background: #6c757d;
+            cursor: not-allowed;
+        }
+
+        .text-center {
+            text-align: center;
+        }
+
+        .mb-12 {
+            margin-bottom: 2rem;
+        }
+
+        .max-w-2xl {
+            max-width: 600px;
+        }
+
+        .mx-auto {
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .error-message {
+            color: red;
+            font-size: 0.75rem;
+            margin-top: 0.25rem;
+        }
+
+        input.invalid,
+        select.invalid,
+        input[type="file"].invalid {
+            border-color: red;
+            background-color: #fff0f0;
+        }
+
+        .remove-section {
+            cursor: pointer;
+            color: red;
+            float: right;
+            font-weight: bold;
+            font-size: 1.5rem;
+            line-height: 1;
+        }
+
+        .remove-section:hover {
+            opacity: 0.8;
+        }
+
+        .field-group label.required:after {
+            content: " *";
+            color: #ff0000;
+        }
+
+        h3 {
+            font-size: 1.5rem;
+            margin: 0.5rem 0;
+        }
+
+        h4 {
+            font-size: 1.2rem;
+            margin: 0.5rem 0;
+        }
+
+        #documentUpload::-webkit-file-upload-button,
+        #educationUpload::-webkit-file-upload-button,
+        #documentUpload2::-webkit-file-upload-button,
+        #workDocumentUpload::-webkit-file-upload-button {
+            background-color: #ffffff;
+            color: rgb(95, 94, 94);
+            border: 1px solid #8a8a8a;
+            border-radius: 0.75rem;
+            padding: 0.25rem 0.75rem;
+            font-size: 0.9rem;
+            cursor: pointer;
+        }
+
+        /* Responsive Styles */
+        @media (max-width: 768px) {
+            .container {
+                padding: 0.75rem;
+            }
+
+            .card {
+                padding: 1rem;
+            }
+
+            .section-heading {
+                font-size: 1.1rem;
+            }
+
+            .actions {
+                flex-direction: column;
+            }
+
+            button {
+                width: 100%;
+                margin: 0.25rem 0;
+            }
+
+            .add-section {
+                width: 100%;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 0.5rem;
+                width: 100%;
+            }
+
+            .card {
+                padding: 0.75rem;
+            }
+
+            .section-heading {
+                font-size: 1rem;
+            }
+
+            button {
+                padding: 0.5rem;
+                font-size: 0.85rem;
+            }
+
+            .field-group input,
+            .field-group select {
+                padding: 0.4rem;
+                font-size: 0.85rem;
+            }
+
+            h3 {
+                font-size: 1.3rem;
+            }
+
+            h4 {
+                font-size: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="text-center mb-12">
+            <h1 class="text-4xl font-bold text-primary mb-4">Welcome Aboard!</h1>
+            <p class="text-muted-foreground text-lg max-w-2xl mx-auto">
+                We're excited to have you join us. Please complete the following steps to get started with your onboarding process.
+            </p>
+        </div>
+
+        <!-- Step 1 - Personal Information -->
+        <div id="step-1" class="card">
+            <h3 class="section-heading">Personal Information</h3>
+            <div class="field-group">
+                <label for="name">Full Name</label>
+                <input type="text" id="name" name="name" required minlength="5" maxlength="50" oninput="filterTextWithSpaces(event)">
+            </div>
+            <div class="field-group">
+                <label for="father-name">Father's Name</label>
+                <input type="text" id="father-name" name="father-name" required minlength="5" maxlength="30" oninput="filterTextWithSpaces(event)">
+            </div>
+            <div class="field-group">
+                <label for="dob">Date of Birth</label>
+                <input type="date" id="dob" name="dob" required>
+            </div>
+            <div class="field-group">
+                <label for="email">Email ID</label>
+                <input type="email" id="email" name="email" required pattern="[a-zA-Z0-9]{5,20}@(gmail|yahoo|outlook)\.com$" title="Please enter a valid email address with 5-20 alphanumeric characters before @ (@gmail.com, @yahoo.com, or @outlook.com)">
+            </div>
+            <div class="field-group">
+                <label for="alt-email">Alternate Email ID</label>
+                <input type="email" id="alt-email" name="alt-email" required pattern="[a-zA-Z0-9]{5,20}@(gmail|yahoo|outlook)\.com$" title="Please enter a valid email address with 5-20 alphanumeric characters before @ (@gmail.com, @yahoo.com, or @outlook.com)">
+            </div>
+            <div class="field-group">
+                <label for="mobile">Mobile Number</label>
+                <input type="tel" id="mobile" name="mobile" required pattern="[6-9][0-9]{9}" maxlength="10" oninput="filterMobileInput(event)" title="Please enter a 10-digit mobile number starting with 6-9">
+            </div>
+            <div class="field-group">
+                <label for="alt-mobile">Alternate Mobile Number</label>
+                <input type="tel" id="alt-mobile" name="alt-mobile" required pattern="[6-9][0-9]{9}" maxlength="10" oninput="filterMobileInput(event)" title="Please enter a 10-digit mobile number starting with 6-9">
+            </div>
+            <div class="field-group">
+                <label for="aadhar">Aadhar Number</label>
+                <input type="text" id="aadhar" name="aadhar" maxlength="12" required oninput="filterNumericInput(event)" title="Please enter exactly 12 digits">
+                <span id="error-message" style="color: red; display: none;">Aadhar Number must be exactly 12 digits long.</span>
+            </div>
+            <div class="field-group">
+                <label for="documentUpload">Aadhar Document</label>
+                <input type="file" id="documentUpload" accept=".pdf,.jpg,.jpeg,.png" required>
+                <small>Max file size: 1MB, formats: PDF, JPG, PNG</small>
+            </div>
+            <div class="field-group">
+                <label for="pan">PAN Number</label>
+                <input type="text" id="pan" name="pan" required minlength="10" maxlength="10" oninput="validatePAN(this)">
+                <span id="panError" class="error" style="color: red;"></span>
+            </div>
+            <div class="field-group">
+                <label for="documentUpload2">PAN Documents</label>
+                <input type="file" id="documentUpload2" accept=".pdf,.jpg,.jpeg,.png" required>
+                <small>Max file size: 1MB, formats: PDF, JPG, PNG</small>
+            </div>
+            <div class="actions">
+                <button class="primary" id="next-button">Next</button>
+            </div>
+        </div>
+
+        <!-- Step 2 - Education -->
+        <div id="step-2" class="card" style="display:none;">
+            <h3 class="section-heading">Education</h3>
+            <div id="educationContainer">
+                <div class="repeater-section education-entry">
+                    <span class="remove-section">−</span>
+                    <div class="field-group">
+                        <label>Education Level</label>
+                        <select class="edu-level" required>
+                            <option value="">Select</option>
+                            <option value="phd">Ph.D.</option>
+                            <option value="masters">Masters/Post-Graduation</option>
+                            <option value="bachelors">Bachelors/Graduation</option>
+                            <option value="diploma">Diploma</option>
+                            <option value="hsc">HSC/12th</option>
+                            <option value="ssc">SSC/10th</option>
+                        </select>
+                    </div>
+                    <div class="field-group">
+                        <label>Stream/Specialization</label>
+                        <input type="text" class="edu-stream" required minlength="3" maxlength="40" oninput="filterTextWithSpaces(event)">
+                    </div>
+                    <div class="field-group">
+                        <label>Institution Name</label>
+                        <input type="text" class="edu-institution" required minlength="5" maxlength="40" oninput="filterTextWithSpaces(event)">
+                    </div>
+                    <div class="field-group">
+                        <label>Board/University</label>
+                        <input type="text" class="edu-board" required minlength="3" maxlength="50" oninput="filterTextWithSpaces(event)">
+                    </div>
+                    <div class="field-group">
+                        <label>Year of Passing</label>
+                        <input type="text" class="edu-year" required maxlength="4" oninput="filterNumericInput(event)" title="Please enter a 4-digit year">
+                    </div>
+                    <div class="field-group">
+                        <label>Percentage</label>
+                        <input type="number" step="0.01" class="edu-percentage" min="0" max="100" maxlength="3" required oninput="this.value = this.value.replace(/[^0-9.]/g, '').slice(0, 3)">
+                    </div>
+                    <div class="field-group">
+                        <label for="educationUpload">Education Certificates</label>
+                        <input type="file" class="educationUpload" accept=".pdf,.jpg,.jpeg,.png" required>
+                        <small>Max file size: 1MB, formats: PDF, JPG, PNG</small>
+                    </div>
+                </div>
+            </div>
+            <button type="button" class="add-section" id="addEducation">
+                <i class="fas fa-plus"></i> Add Education
+            </button>
+            <div class="actions">
+                <button class="outline" id="back-button-2">Back</button>
+                <button class="primary" id="next-button-2">Next</button>
+            </div>
+        </div>
+
+        <!-- Step 3 - Address -->
+        <div id="step-3" class="card" style="display:none;">
+            <h3 class="section-heading">Address</h3>
+            <h4>Permanent Address</h4>
+            <div class="field-group">
+                <label for="permanent-street">Street Address</label>
+                <input type="text" id="permanent-street" name="permanent-street" required minlength="5" maxlength="30" oninput="filterStreetInput(event)">
+            </div>
+            <div class="field-group">
+                <label for="permanent-city">City</label>
+                <input type="text" id="permanent-city" name="permanent-city" required minlength="3" maxlength="30" oninput="filterTextWithSpaces(event)">
+            </div>
+            <div class="field-group">
+                <label for="permanent-state">State</label>
+                <input type="text" id="permanent-state" name="permanent-state" required minlength="5" maxlength="30" oninput="filterTextWithSpaces(event)">
+            </div>
+            <div class="field-group">
+                <label for="permanent-zipcode">Postal Code</label>
+                <input type="text" id="permanent-zipcode" name="permanent-zipcode" required minlength="6" maxlength="6" oninput="filterNumericInput(event)">
+            </div>
+            <div class="field-group">
+                <label for="permanent-country">Country</label>
+                <input type="text" id="permanent-country" name="permanent-country" required minlength="5" maxlength="30" oninput="filterTextWithSpaces(event)">
+            </div>
+            <h4>Current Address</h4>
+            <div class="field-group">
+                <label for="current-street">Street Address</label>
+                <input type="text" id="current-street" name="current-street" required minlength="5" maxlength="30" oninput="filterStreetInput(event)">
+            </div>
+            <div class="field-group">
+                <label for="current-city">City</label>
+                <input type="text" id="current-city" name="current-city" required minlength="3" maxlength="30" oninput="filterTextWithSpaces(event)">
+            </div>
+            <div class="field-group">
+                <label for="current-state">State</label>
+                <input type="text" id="current-state" name="current-state" required minlength="5" maxlength="30" oninput="filterTextWithSpaces(event)">
+            </div>
+            <div class="field-group">
+                <label for="current-zipcode">Postal Code</label>
+                <input type="text" id="current-zipcode" name="current-zipcode" required minlength="6" maxlength="6" oninput="filterNumericInput(event)">
+            </div>
+            <div class="field-group">
+                <label for="current-country">Country</label>
+                <input type="text" id="current-country" name="current-country" required minlength="5" maxlength="30" oninput="filterTextWithSpaces(event)">
+            </div>
+            <div class="actions">
+                <button class="outline" id="back-button-3">Back</button>
+                <button class="primary" id="next-button-3">Next</button>
+            </div>
+        </div>
+
+        <!-- Step 4 - Work History -->
+        <div id="step-4" class="card" style="display:none;">
+            <h3 class="section-heading">Work History</h3>
+            <div class="field-group">
+                <label for="experience-type">Experience Type</label>
+                <select id="experience-type" required>
+                    <option value="">Select</option>
+                    <option value="fresher">Fresher</option>
+                    <option value="experienced">Experienced</option>
+                </select>
+            </div>
+            <div id="workHistoryContainer">
+                <div class="repeater-section work-history-entry">
+                    <span class="remove-section">−</span>
+                    <div class="field-group">
+                        <label for="company-name">Company Name</label>
+                        <input type="text" class="company-name" name="company-name" required minlength="5" maxlength="50" oninput="filterTextWithSpaces(event)">
+                    </div>
+                    <div class="field-group">
+                        <label for="designation">Designation</label>
+                        <input type="text" class="designation" name="designation" required minlength="5" maxlength="50" oninput="filterTextWithSpaces(event)">
+                    </div>
+                    <div class="field-group">
+                        <label for="employment-period">Employment Period (in years)</label>
+                        <input type="text" class="employment-period" name="employment-period" required maxlength="2" oninput="filterNumericInput(event)" title="Please enter a value between 1-50 years">
+                    </div>
+                    <div class="field-group">
+                        <label for="work-location">Location</label>
+                        <input type="text" class="work-location" name="work-location" required minlength="3" maxlength="50" oninput="filterTextWithSpaces(event)">
+                    </div>
+                    <div class="field-group">
+                        <label for="reason-for-leaving">Reason for Leaving</label>
+                        <input type="text" class="reason-for-leaving" name="reason-for-leaving" required minlength="5" maxlength="300" oninput="filterReasonForLeaving(event)">
+                    </div>
+                    <div class="field-group">
+                        <label for="workDocumentUpload">Work Documents</label>
+                        <input type="file" class="workDocumentUpload" accept=".pdf,.jpg,.jpeg,.png" multiple required>
+                        <small>Max file size: 1MB, formats: PDF, JPG, PNG</small>
+                    </div>
+                </div>
+            </div>
+            <button type="button" class="add-section" id="addWorkHistory">
+                <i class="fas fa-plus"></i> Add Work History
+            </button>
+            <div class="actions">
+                <button class="outline" id="back-button-4">Back</button>
+                <button class="primary" id="next-button-4">Next</button>
+            </div>
+        </div>
+
+        <!-- Step 5 - Bank Details -->
+        <div id="step-5" class="card" style="display:none;">
+            <h3 class="section-heading">Bank Details</h3>
+            <div class="field-group">
+                <label for="account-holder-name">Account Holder's Name</label>
+                <input type="text" id="account-holder-name" name="account-holder-name" required minlength="5" maxlength="40" oninput="filterTextWithSpaces(event)">
+            </div>
+            <div class="field-group">
+                <label for="bank-name">Bank Name</label>
+                <input type="text" id="bank-name" name="bank-name" required minlength="3" maxlength="30" oninput="filterTextWithSpaces(event)">
+            </div>
+            <div class="field-group">
+                <label for="account-number">Account Number</label>
+                <input type="text" id="account-number" name="account-number" required minlength="11" maxlength="16" oninput="filterNumericInput(event)">
+            </div>
+            <div class="field-group">
+                <label for="ifsc-code">IFSC Code</label>
+                <input type="text" id="ifsc-code" name="ifsc-code" required minlength="11" maxlength="11" oninput="validateIFSCCode(event)">
+            </div>
+            <div class="field-group">
+                <label for="bank-branch">Bank Branch</label>
+                <input type="text" id="bank-branch" name="bank-branch" required minlength="3" maxlength="30" oninput="filterTextWithSpaces(event)">
+            </div>
+            <div class="field-group">
+                <label for="account-type">Account Type</label>
+                <select id="account-type" name="account-type" required>
+                    <option value="savings">Savings</option>
+                    <option value="current">Current</option>
+                </select>
+            </div>
+            <div class="actions">
+                <button class="outline" id="back-button-5">Back</button>
+                <button class="primary" id="submit-button">Submit</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+// Global variables
+let currentStep = 0;
+const steps = ['step-1', 'step-2', 'step-3', 'step-4', 'step-5'];
+
+let employeeData = {
+    status: 'pending',
+    department: 'Not Assigned',
+    submissionDate: new Date().toISOString(),
+    documents: {
+        aadhar: null,
+        pan: null,
+        education: [],
+        work: []
+    }
+};
+
+// Utility function to convert file to base64
+function fileToBase64(file) {
+    return new Promise((resolve, reject) => {
+        if (!file) {
+            reject(new Error('No file provided'));
+            return;
+        }
+        if (file.size > 1 * 1024 * 1024) { // 1MB limit
+            reject(new Error('File size exceeds 1MB'));
+            return;
+        }
+        const reader = new FileReader();
+        reader.onload = () => resolve({
+            name: file.name,
+            type: file.type,
+            size: file.size,
+            data: reader.result
+        });
+        reader.onerror = () => reject(new Error('Failed to read file'));
+        reader.readAsDataURL(file);
+    });
+}
+
+// Utility function to convert base64 to Blob
+function base64ToBlob(base64, contentType) {
+    try {
+        const byteCharacters = atob(base64.split(',')[1]);
+        const byteArrays = [];
+        for (let offset = 0; offset < byteCharacters.length; offset += 512) {
+            const slice = byteCharacters.slice(offset, offset + 512);
+            const byteNumbers = new Array(slice.length);
+            for (let i = 0; i < slice.length; i++) {
+                byteNumbers[i] = slice.charCodeAt(i);
+            }
+            const byteArray = new Uint8Array(byteNumbers);
+            byteArrays.push(byteArray);
+        }
+        return new Blob(byteArrays, { type: contentType });
+    } catch (e) {
+        console.error('Error converting base64 to blob:', e);
+        return null;
+    }
+}
+
+// Utility function to estimate string size in bytes
+function estimateStringSize(str) {
+    return new Blob([str]).size;
+}
+
+// Utility functions for error handling
+function showError(input, message) {
+    removeError(input);
+    const errorDiv = document.createElement('div');
+    errorDiv.className = 'error-message';
+    errorDiv.textContent = message;
+    input.parentNode.insertBefore(errorDiv, input.nextSibling);
+    input.classList.add('invalid');
+}
+
+function removeError(input) {
+    const existingError = input.nextElementSibling;
+    if (existingError && existingError.className === 'error-message') {
+        existingError.remove();
+    }
+    input.classList.remove('invalid');
+}
+
+// Helper function to count characters excluding spaces
+function getCharCountExcludingSpaces(value) {
+    return value.replace(/\s/g, '').length;
+}
+
+// Function to check for duplicate education levels
+function checkDuplicateEducationLevel(currentSelect) {
+    const container = document.getElementById('educationContainer');
+    const allSelects = container.querySelectorAll('.edu-level');
+    const selectedValues = [];
+    
+    allSelects.forEach(select => {
+        if (select.value && select !== currentSelect) {
+            selectedValues.push(select.value);
+        }
+    });
+    
+    if (currentSelect.value && selectedValues.includes(currentSelect.value)) {
+        return {
+            isValid: false,
+            message: 'This education level has already been added'
+        };
+    }
+    
+    return {
+        isValid: true,
+        message: ''
+    };
+}
+
+// Function to check for duplicate employment details
+function checkDuplicateEmployment(currentEntry) {
+    const container = document.getElementById('workHistoryContainer');
+    const allEntries = container.querySelectorAll('.work-history-entry');
+    const currentCompany = currentEntry.querySelector('.company-name').value.trim().toLowerCase();
+    const currentDesignation = currentEntry.querySelector('.designation').value.trim().toLowerCase();
+    const currentLocation = currentEntry.querySelector('.work-location').value.trim().toLowerCase();
+    
+    if (!currentCompany || !currentDesignation || !currentLocation) {
+        return { isValid: true, message: '' };
+    }
+    
+    for (let entry of allEntries) {
+        if (entry === currentEntry) continue;
+        
+        const company = entry.querySelector('.company-name').value.trim().toLowerCase();
+        const designation = entry.querySelector('.designation').value.trim().toLowerCase();
+        const location = entry.querySelector('.work-location').value.trim().toLowerCase();
+        
+        if (company === currentCompany && designation === currentDesignation && location === currentLocation) {
+            return {
+                isValid: false,
+                message: 'Same employment details (company, designation, and location) cannot be added again'
+            };
+        }
+    }
+    
+    return {
+        isValid: true,
+        message: ''
+    };
+}
+
+// Validation functions
+const validators = {
+    textWithSpaces: (value, minLength = 5, maxLength = null) => {
+        if (value !== value.trimStart()) {
+            return {
+                isValid: false,
+                message: 'Leading spaces are not allowed'
+            };
+        }
+        
+        if (/\s{2,}/.test(value)) {
+            return {
+                isValid: false,
+                message: 'Multiple consecutive spaces are not allowed'
+            };
+        }
+        
+        const charCount = getCharCountExcludingSpaces(value);
+        if (charCount < minLength) {
+            return {
+                isValid: false,
+                message: `Must be at least ${minLength} characters long (excluding spaces)`
+            };
+        }
+        
+        if (maxLength && charCount > maxLength) {
+            return {
+                isValid: false,
+                message: `Must not exceed ${maxLength} characters (excluding spaces)`
+            };
+        }
+        
+        const trimmedValue = value.trim();
+        const regex = /^[A-Za-z]+(\s[A-Za-z]+)*$/;
+        if (!regex.test(trimmedValue)) {
+            return {
+                isValid: false,
+                message: 'Must contain only letters and single spaces between words'
+            };
+        }
+        
+        return {
+            isValid: true,
+            message: ''
+        };
+    },
+
+    reasonForLeaving: (value, minLength = 5, maxLength = 300) => {
+        if (value !== value.trimStart()) {
+            return {
+                isValid: false,
+                message: 'Leading spaces are not allowed'
+            };
+        }
+        
+        if (/\s{2,}/.test(value)) {
+            return {
+                isValid: false,
+                message: 'Multiple consecutive spaces are not allowed'
+            };
+        }
+        
+        if (value.length < minLength) {
+            return {
+                isValid: false,
+                message: `Must be at least ${minLength} characters long`
+            };
+        }
+        
+        if (value.length > maxLength) {
+            return {
+                isValid: false,
+                message: `Must not exceed ${maxLength} characters`
+            };
+        }
+        
+        if (/^\d+$/.test(value.trim())) {
+            return {
+                isValid: false,
+                message: 'Reason cannot contain only digits'
+            };
+        }
+        
+        const trimmedValue = value.trim();
+        const regex = /^[A-Za-z0-9\s\.\,\-\:\;\"\']+([\s][A-Za-z0-9\s\.\,\-\:\;\"\'])*$/;
+        if (!regex.test(trimmedValue)) {
+            return {
+                isValid: false,
+                message: 'Must contain only letters, numbers, spaces, and special characters (. , - : ; " \')'
+            };
+        }
+        
+        return {
+            isValid: true,
+            message: ''
+        };
+    },
+
+    streetAddress: (value) => {
+        if (value !== value.trimStart()) {
+            return {
+                isValid: false,
+                message: 'Leading spaces are not allowed'
+            };
+        }
+        
+        if (/\s{2,}/.test(value)) {
+            return {
+                isValid: false,
+                message: 'Multiple consecutive spaces are not allowed'
+            };
+        }
+        
+        const charCount = getCharCountExcludingSpaces(value);
+        if (charCount < 5) {
+            return {
+                isValid: false,
+                message: 'Must be at least 5 characters long (excluding spaces)'
+            };
+        }
+        
+        if (charCount > 30) {
+            return {
+                isValid: false,
+                message: 'Must not exceed 30 characters (excluding spaces)'
+            };
+        }
+        
+        const trimmedValue = value.trim();
+        const regex = /^[A-Za-z0-9\s\,\.\/-:]+$/;
+        if (!regex.test(trimmedValue)) {
+            return {
+                isValid: false,
+                message: 'Must contain only letters, numbers, spaces, and special characters (,.-/:)'
+            };
+        }
+        
+        return {
+            isValid: true,
+            message: ''
+        };
+    },
+
+    city: (value) => {
+        if (value !== value.trimStart()) {
+            return {
+                isValid: false,
+                message: 'Leading spaces are not allowed'
+            };
+        }
+        
+        if (/\s{2,}/.test(value)) {
+            return {
+                isValid: false,
+                message: 'Multiple consecutive spaces are not allowed'
+            };
+        }
+        
+        const charCount = getCharCountExcludingSpaces(value);
+        if (charCount < 3) {
+            return {
+                isValid: false,
+                message: 'Must be at least 3 characters long (excluding spaces)'
+            };
+        }
+        
+        if (charCount > 30) {
+            return {
+                isValid: false,
+                message: 'Must not exceed 30 characters (excluding spaces)'
+            };
+        }
+        
+        const trimmedValue = value.trim();
+        const regex = /^[A-Za-z]+(\s[A-Za-z]+)*$/;
+        if (!regex.test(trimmedValue)) {
+            return {
+                isValid: false,
+                message: 'Must contain only letters and single spaces between words'
+            };
+        }
+        
+        return {
+            isValid: true,
+            message: ''
+        };
+    },
+
+    state: (value) => {
+        if (value !== value.trimStart()) {
+            return {
+                isValid: false,
+                message: 'Leading spaces are not allowed'
+            };
+        }
+        
+        if (/\s{2,}/.test(value)) {
+            return {
+                isValid: false,
+                message: 'Multiple consecutive spaces are not allowed'
+            };
+        }
+        
+        const charCount = getCharCountExcludingSpaces(value);
+        if (charCount < 5) {
+            return {
+                isValid: false,
+                message: 'Must be at least 5 characters long (excluding spaces)'
+            };
+        }
+        
+        if (charCount > 30) {
+            return {
+                isValid: false,
+                message: 'Must not exceed 30 characters (excluding spaces)'
+            };
+        }
+        
+        const trimmedValue = value.trim();
+        const regex = /^[A-Za-z]+(\s[A-Za-z]+)*$/;
+        if (!regex.test(trimmedValue)) {
+            return {
+                isValid: false,
+                message: 'Must contain only letters and single spaces between words'
+            };
+        }
+        
+        return {
+            isValid: true,
+            message: ''
+        };
+    },
+
+    country: (value) => {
+        if (value !== value.trimStart()) {
+            return {
+                isValid: false,
+                message: 'Leading spaces are not allowed'
+            };
+        }
+        
+        if (/\s{2,}/.test(value)) {
+            return {
+                isValid: false,
+                message: 'Multiple consecutive spaces are not allowed'
+            };
+        }
+        
+        const charCount = getCharCountExcludingSpaces(value);
+        if (charCount < 5) {
+            return {
+                isValid: false,
+                message: 'Must be at least 5 characters long (excluding spaces)'
+            };
+        }
+        
+        if (charCount > 30) {
+            return {
+                isValid: false,
+                message: 'Must not exceed 30 characters (excluding spaces)'
+            };
+        }
+        
+        const trimmedValue = value.trim();
+        const regex = /^[A-Za-z]+(\s[A-Za-z]+)*$/;
+        if (!regex.test(trimmedValue)) {
+            return {
+                isValid: false,
+                message: 'Must contain only letters and single spaces between words'
+            };
+        }
+        
+        return {
+            isValid: true,
+            message: ''
+        };
+    },
+
+    email: (value) => {
+        const regex = /^[a-zA-Z0-9]{5,20}@(gmail|yahoo|outlook)\.com$/;
+        if (!regex.test(value)) {
+            return {
+                isValid: false,
+                message: 'Email must have 5-20 alphanumeric characters before @ and be from gmail, yahoo, or outlook'
+            };
+        }
+        return {
+            isValid: true,
+            message: ''
+        };
+    },
+
+    mobile: (value) => {
+        const regex = /^[6-9][0-9]{9}$/;
+        if (!regex.test(value)) {
+            return {
+                isValid: false,
+                message: 'Mobile number must be 10 digits starting with 6, 7, 8, or 9'
+            };
+        }
+        return {
+            isValid: true,
+            message: ''
+        };
+    },
+
+    mobileNotSame: (value1, value2) => {
+        if (value1 === value2 && value1.length === 10) {
+            return {
+                isValid: false,
+                message: 'Mobile number and alternate mobile number cannot be the same'
+            };
+        }
+        return {
+            isValid: true,
+            message: ''
+        };
+    },
+
+    aadhar: (value) => {
+        const regex = /^\d{12}$/;
+        return {
+            isValid: regex.test(value),
+            message: 'Aadhar number must be exactly 12 digits'
+        };
+    },
+
+    pan: (value) => {
+        const regex = /^[A-Z]{5}[0-9]{4}[A-Z]$/;
+        return {
+            isValid: regex.test(value),
+            message: 'PAN must be in format ABCDE1234F'
+        };
+    },
+
+    dob: (value) => {
+        const birthDate = new Date(value);
+        const today = new Date();
+        if (birthDate > today) {
+            return {
+                isValid: false,
+                message: 'Date of birth cannot be in the future'
+            };
+        }
+        let age = today.getFullYear() - birthDate.getFullYear();
+        const monthDiff = today.getMonth() - birthDate.getMonth();
+        if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
+            age--;
+        }
+        return {
+            isValid: age >= 21,
+            message: 'You must be at least 21 years old'
+        };
+    },
+
+    year: (value, educationLevel) => {
+        const currentYear = new Date().getFullYear();
+        const yearRegex = /^\d{4}$/;
+        const yearValue = parseInt(value);
+        
+        if (!yearRegex.test(value)) {
+            return {
+                isValid: false,
+                message: 'Year must be exactly 4 digits'
+            };
+        }
+        
+        if (yearValue === 0 || value === '0000') {
+            return {
+                isValid: false,
+                message: 'Year cannot be all zeroes'
+            };
+        }
+        
+        if (yearValue > currentYear) {
+            return {
+                isValid: false,
+                message: 'Year cannot be in the future'
+            };
+        }
+        
+        const dob = document.getElementById('dob').value;
+        if (dob) {
+            const birthYear = new Date(dob).getFullYear();
+            let minAge, maxAge;
+            
+            switch(educationLevel) {
+                case 'ssc':
+                    minAge = 15;
+                    maxAge = 16;
+                    break;
+                case 'hsc':
+                    minAge = 17;
+                    maxAge = 19;
+                    break;
+                case 'diploma':
+                    minAge = 18;
+                    maxAge = 21;
+                    break;
+                case 'bachelors':
+                    minAge = 20;
+                    maxAge = 23;
+                    break;
+                case 'masters':
+                    minAge = 22;
+                    maxAge = 26;
+                    break;
+                case 'phd':
+                    minAge = 25;
+                    maxAge = 30;
+                    break;
+                default:
+                    return {
+                        isValid: true,
+                        message: ''
+                    };
+            }
+            
+            const ageAtPassing = yearValue - birthYear;
+            if (ageAtPassing < minAge || ageAtPassing > maxAge) {
+                return {
+                    isValid: false,
+                    message: `Year of passing for ${educationLevel.toUpperCase()} must be when you were between ${minAge} and ${maxAge} years old`
+                };
+            }
+        }
+        
+        return {
+            isValid: true,
+            message: ''
+        };
+    },
+
+    percentage: (value) => {
+        const num = parseFloat(value);
+        
+        if (isNaN(num)) {
+            return {
+                isValid: false,
+                message: 'Please enter a valid number'
+            };
+        }
+        
+        if (num === 0 || value === '0' || value === '0.0' || value === '0.00') {
+            return {
+                isValid: false,
+                message: 'Percentage cannot be zero'
+            };
+        }
+        
+        if (num < 0 || num > 100) {
+            return {
+                isValid: false,
+                message: 'Percentage must be between 0 and 100'
+            };
+        }
+        
+        return {
+            isValid: true,
+            message: ''
+        };
+    },
+
+    zipcode: (value) => {
+        const regex = /^\d{6}$/;
+        
+        if (!regex.test(value)) {
+            return {
+                isValid: false,
+                message: 'Postal code must be exactly 6 digits'
+            };
+        }
+        
+        if (value === '000000') {
+            return {
+                isValid: false,
+                message: 'Postal code cannot be all zeroes'
+            };
+        }
+        
+        return {
+            isValid: true,
+            message: ''
+        };
+    },
+
+    accountNumber: (value) => {
+        const regex = /^\d{11,16}$/;
+        return {
+            isValid: regex.test(value),
+            message: 'Account number must be between 11 and 16 digits'
+        };
+    },
+
+    ifsc: (value) => {
+        const regex = /^[A-Z]{4}0[A-Z0-9]{6}$/;
+        return {
+            isValid: regex.test(value),
+            message: 'IFSC must be in format ABCD0XXXXXX'
+        };
+    },
+
+    employmentPeriod: (value) => {
+        const regex = /^\d{1,2}$/;
+        const num = parseInt(value);
+        return {
+            isValid: regex.test(value) && num > 0 && num <= 50,
+            message: 'Employment period must be between 1 and 50 years'
+        };
+    },
+
+    fileUpload: (input) => {
+        if (!input.files || input.files.length === 0) {
+            return {
+                isValid: false,
+                message: 'Please upload the required document'
+            };
+        }
+        
+        const allowedTypes = ['application/pdf', 'image/jpeg', 'image/jpg', 'image/png'];
+        for (let file of input.files) {
+            if (!allowedTypes.includes(file.type)) {
+                return {
+                    isValid: false,
+                    message: 'Please upload a PDF, JPG, or PNG file'
+                };
+            }
+            
+            if (file.size > 1 * 1024 * 1024) { // 1MB limit
+                return {
+                    isValid: false,
+                    message: 'File size must be less than 1MB'
+                };
+            }
+        }
+        
+        return {
+            isValid: true,
+            message: ''
+        };
+    }
+};
+
+// Address copy checkbox
+function addAddressCopyCheckbox() {
+    const currentAddressHeading = Array.from(document.querySelectorAll('h4')).find(heading => heading.textContent === 'Current Address');
+    if (!currentAddressHeading) return;
+
+    const checkboxContainer = document.createElement('div');
+    checkboxContainer.style.marginBottom = '0.5rem';
+
+    const checkbox = document.createElement('input');
+    checkbox.type = 'checkbox';
+    checkbox.id = 'copy-address';
+    checkbox.style.marginRight = '0.5rem';
+
+    const label = document.createElement('label');
+    label.htmlFor = 'copy-address';
+    label.textContent = 'Same as Permanent Address';
+
+    checkboxContainer.appendChild(checkbox);
+    checkboxContainer.appendChild(label);
+    currentAddressHeading.parentNode.insertBefore(checkboxContainer, currentAddressHeading);
+
+    checkbox.addEventListener('change', function() {
+        if (this.checked) {
+            document.getElementById('current-street').value = document.getElementById('permanent-street').value;
+            document.getElementById('current-city').value = document.getElementById('permanent-city').value;
+            document.getElementById('current-state').value = document.getElementById('permanent-state').value;
+            document.getElementById('current-zipcode').value = document.getElementById('permanent-zipcode').value;
+            document.getElementById('current-country').value = document.getElementById('permanent-country').value;
+            toggleCurrentAddressFields(true);
+        } else {
+            toggleCurrentAddressFields(false);
+        }
+    });
+
+    function toggleCurrentAddressFields(readOnly) {
+        const fields = ['current-street', 'current-city', 'current-state', 'current-zipcode', 'current-country'];
+        fields.forEach(fieldId => {
+            const field = document.getElementById(fieldId);
+            field.readOnly = readOnly;
+            field.style.backgroundColor = readOnly ? '#f0f0f0' : '#f8f9fa';
+            if (!readOnly) field.value = '';
+        });
+    }
+}
+
+// Toggle work history fields based on experience type
+function toggleWorkHistoryFields(isFresher) {
+    const workContainer = document.getElementById('workHistoryContainer');
+    const addButton = document.getElementById('addWorkHistory');
+    const fields = workContainer.querySelectorAll('input:not([type="file"]), .workDocumentUpload');
+    
+    fields.forEach(field => {
+        field.disabled = isFresher;
+        field.required = !isFresher;
+        field.style.backgroundColor = isFresher ? '#f0f0f0' : '#f8f9fa';
+        if (isFresher) {
+            field.value = '';
+            removeError(field);
+        }
+    });
+
+    addButton.disabled = isFresher;
+    if (isFresher) {
+        const entries = workContainer.querySelectorAll('.work-history-entry');
+        if (entries.length > 1) {
+            entries.forEach((entry, index) => {
+                if (index > 0) entry.remove();
+            });
+        }
+    }
+}
+
+// Field validation with enhanced checks
+function validateField(input) {
+    const value = input.value;
+
+    if (input.type === 'file' && input.required) {
+        const fileResult = validators.fileUpload(input);
+        if (!fileResult.isValid) {
+            showError(input, fileResult.message);
+            return false;
+        }
+        removeError(input);
+        return true;
+    }
+
+    if (input.className.includes('workDocumentUpload')) {
+        const experienceType = document.getElementById('experience-type').value;
+        if (experienceType === 'experienced') {
+            const fileResult = validators.fileUpload(input);
+            if (!fileResult.isValid) {
+                showError(input, fileResult.message);
+                return false;
+            }
+            if (input.files.length === 0) {
+                showError(input, 'At least one work document is required.');
+                return false;
+            }
+        }
+        removeError(input);
+        return true;
+    }
+
+    if (input.required && !value.trim()) {
+        showError(input, `${input.previousElementSibling.textContent.replace('*', '')} is required`);
+        return false;
+    }
+
+    if (!value.trim() && !input.required) {
+        removeError(input);
+        return true;
+    }
+
+    const minLength = parseInt(input.getAttribute('minlength')) || 0;
+    const maxLength = parseInt(input.getAttribute('maxlength')) || null;
+
+    if (input.id === 'dob') {
+        const dobResult = validators.dob(value);
+        if (!dobResult.isValid) {
+            showError(input, dobResult.message);
+            return false;
+        }
+    } else if (input.id === 'name') {
+        const nameResult = validators.textWithSpaces(value, 5, 50);
+        if (!nameResult.isValid) {
+            showError(input, nameResult.message);
+            return false;
+        }
+    } else if (input.id === 'father-name') {
+        const fatherNameResult = validators.textWithSpaces(value, 5, 30);
+        if (!fatherNameResult.isValid) {
+            showError(input, fatherNameResult.message);
+            return false;
+        }
+    } else if (input.id === 'account-holder-name') {
+        const accountHolderResult = validators.textWithSpaces(value, 5, 40);
+        if (!accountHolderResult.isValid) {
+            showError(input, accountHolderResult.message);
+            return false;
+        }
+    } else if (input.id === 'bank-name') {
+        const bankNameResult = validators.textWithSpaces(value, 3, 30);
+        if (!bankNameResult.isValid) {
+            showError(input, bankNameResult.message);
+            return false;
+        }
+    } else if (input.id === 'bank-branch') {
+        const bankBranchResult = validators.textWithSpaces(value, 3, 30);
+        if (!bankBranchResult.isValid) {
+            showError(input, bankBranchResult.message);
+            return false;
+        }
+    } else if (input.id === 'email' || input.id === 'alt-email') {
+        const emailResult = validators.email(value);
+        if (!emailResult.isValid) {
+            showError(input, emailResult.message);
+            return false;
+        }
+    } else if (input.id === 'mobile' || input.id === 'alt-mobile') {
+        const mobileResult = validators.mobile(value);
+        if (!mobileResult.isValid) {
+            showError(input, mobileResult.message);
+            return false;
+        }
+        
+        const mobileValue = document.getElementById('mobile').value;
+        const altMobileValue = document.getElementById('alt-mobile').value;
+        if (mobileValue && altMobileValue) {
+            const sameNumberResult = validators.mobileNotSame(mobileValue, altMobileValue);
+            if (!sameNumberResult.isValid) {
+                showError(input, sameNumberResult.message);
+                return false;
+            }
+        }
+    } else if (input.id.includes('street')) {
+        const streetResult = validators.streetAddress(value);
+        if (!streetResult.isValid) {
+            showError(input, streetResult.message);
+            return false;
+        }
+    } else if (input.id.includes('city')) {
+        const cityResult = validators.city(value);
+        if (!cityResult.isValid) {
+            showError(input, cityResult.message);
+            return false;
+        }
+    } else if (input.id.includes('state')) {
+        const stateResult = validators.state(value);
+        if (!stateResult.isValid) {
+            showError(input, stateResult.message);
+            return false;
+        }
+    } else if (input.id.includes('country')) {
+        const countryResult = validators.country(value);
+        if (!countryResult.isValid) {
+            showError(input, countryResult.message);
+            return false;
+        }
+    } else if (input.id.includes('zipcode')) {
+        const zipcodeResult = validators.zipcode(value);
+        if (!zipcodeResult.isValid) {
+            showError(input, zipcodeResult.message);
+            return false;
+        }
+    } else if (input.className.includes('employment-period')) {
+        const empResult = validators.employmentPeriod(value);
+        if (!empResult.isValid) {
+            showError(input, empResult.message);
+            return false;
+        }
+    } else if (input.className.includes('edu-year')) {
+        const educationLevel = input.closest('.education-entry').querySelector('.edu-level').value;
+        const yearResult = validators.year(value, educationLevel);
+        if (!yearResult.isValid) {
+            showError(input, yearResult.message);
+            return false;
+        }
+    } else if (input.className.includes('edu-percentage')) {
+        const percentageResult = validators.percentage(value);
+        if (!percentageResult.isValid) {
+            showError(input, percentageResult.message);
+            return false;
+        }
+    } else if (input.className.includes('edu-level')) {
+        const duplicateResult = checkDuplicateEducationLevel(input);
+        if (!duplicateResult.isValid) {
+            showError(input, duplicateResult.message);
+            return false;
+        }
+    } else if (input.className.includes('edu-stream')) {
+        const streamResult = validators.textWithSpaces(value, 3, 40);
+        if (!streamResult.isValid) {
+            showError(input, streamResult.message);
+            return false;
+        }
+    } else if (input.className.includes('edu-institution')) {
+        const institutionResult = validators.textWithSpaces(value, 5, 40);
+        if (!institutionResult.isValid) {
+            showError(input, institutionResult.message);
+            return false;
+        }
+    } else if (input.className.includes('edu-board')) {
+        const boardResult = validators.textWithSpaces(value, 3, 50);
+        if (!boardResult.isValid) {
+            showError(input, boardResult.message);
+            return false;
+        }
+    } else if (input.className.includes('company-name')) {
+        const companyResult = validators.textWithSpaces(value, 5, 50);
+        if (!companyResult.isValid) {
+            showError(input, companyResult.message);
+            return false;
+        }
+        
+        const workEntry = input.closest('.work-history-entry');
+        const duplicateWorkResult = checkDuplicateEmployment(workEntry);
+        if (!duplicateWorkResult.isValid) {
+            showError(input, duplicateWorkResult.message);
+            return false;
+        }
+    } else if (input.className.includes('designation')) {
+        const designationResult = validators.textWithSpaces(value, 5, 50);
+        if (!designationResult.isValid) {
+            showError(input, designationResult.message);
+            return false;
+        }
+        
+        const workEntry = input.closest('.work-history-entry');
+        const duplicateWorkResult = checkDuplicateEmployment(workEntry);
+        if (!duplicateWorkResult.isValid) {
+            showError(input, duplicateWorkResult.message);
+            return false;
+        }
+    } else if (input.className.includes('work-location')) {
+        const locationResult = validators.textWithSpaces(value, 3, 50);
+        if (!locationResult.isValid) {
+            showError(input, locationResult.message);
+            return false;
+        }
+        
+        const workEntry = input.closest('.work-history-entry');
+        const duplicateWorkResult = checkDuplicateEmployment(workEntry);
+        if (!duplicateWorkResult.isValid) {
+            showError(input, duplicateWorkResult.message);
+            return false;
+        }
+    } else if (input.className.includes('reason-for-leaving')) {
+        const reasonResult = validators.reasonForLeaving(value, 5, 300);
+        if (!reasonResult.isValid) {
+            showError(input, reasonResult.message);
+            return false;
+        }
+    } else {
+        let validatorType;
+        let validatorMinLength = minLength;
+        let validatorMaxLength = maxLength;
+
+        if (input.id.includes('aadhar')) {
+            validatorType = 'aadhar';
+        } else if (input.id.includes('pan')) {
+            validatorType = 'pan';
+        } else if (input.id.includes('account-number')) {
+            validatorType = 'accountNumber';
+        } else if (input.id.includes('ifsc')) {
+            validatorType = 'ifsc';
+        }
+
+        const validator = validators[validatorType];
+        if (validator) {
+            const result = validator(value, validatorMinLength, validatorMaxLength);
+            if (!result.isValid) {
+                showError(input, result.message);
+                return false;
+            }
+        }
+    }
+
+    removeError(input);
+    return true;
+}
+
+// Step validation
+function validateStep(stepId) {
+    const step = document.getElementById(stepId);
+    const inputs = step.querySelectorAll('input:not([disabled]), select:not([disabled])');
+    let isValid = true;
+
+    inputs.forEach(input => {
+        if (!validateField(input)) {
+            isValid = false;
+        }
+    });
+
+    return isValid;
+}
+
+// Data collection
+async function collectEducationData(container) {
+    const educationData = [];
+    const entries = container.querySelectorAll('.education-entry');
+    for (let entry of entries) {
+        const fileInput = entry.querySelector('.educationUpload');
+        let certificate = null;
+        if (fileInput.files.length > 0) {
+            try {
+                certificate = await fileToBase64(fileInput.files[0]);
+            } catch (error) {
+                throw new Error(`Failed to process education certificate: ${error.message}`);
+            }
+        }
+        const eduData = {
+            level: entry.querySelector('.edu-level').value,
+            stream: entry.querySelector('.edu-stream').value,
+            institution: entry.querySelector('.edu-institution').value,
+            board: entry.querySelector('.edu-board').value,
+            yearOfPassing: entry.querySelector('.edu-year').value,
+            percentage: entry.querySelector('.edu-percentage').value,
+            certificate: certificate
+        };
+        educationData.push(eduData);
+    }
+    return educationData;
+}
+
+async function collectWorkHistoryData(container) {
+    const workHistoryData = [];
+    const experienceType = document.getElementById('experience-type').value;
+    
+    if (experienceType === 'fresher') {
+        return [{ experienceType: 'fresher' }];
+    }
+    
+    const entries = container.querySelectorAll('.work-history-entry');
+    for (let entry of entries) {
+        const fileInput = entry.querySelector('.workDocumentUpload');
+        const documents = [];
+        
+        // Validate that at least one document is uploaded
+        if (!fileInput.files || fileInput.files.length === 0) {
+            showError(fileInput, 'At least one work document is required for each work history entry.');
+            throw new Error('At least one work document is required for each work history entry.');
+        }
+        
+        // Create placeholders for each uploaded document
+        for (let i = 0; i < fileInput.files.length; i++) {
+            documents.push({}); // Placeholder for backend mapping
+        }
+        
+        const workData = {
+            experienceType: 'experienced',
+            companyName: entry.querySelector('.company-name').value,
+            designation: entry.querySelector('.designation').value,
+            employmentPeriod: entry.querySelector('.employment-period').value,
+            location: entry.querySelector('.work-location').value,
+            reasonForLeaving: entry.querySelector('.reason-for-leaving').value,
+            documents: documents // Array of {} for each document
+        };
+        
+        // Store actual document data for FormData
+        workData._documents = []; // Temporary storage for actual files
+        for (let file of fileInput.files) {
+            try {
+                const fileData = await fileToBase64(file);
+                workData._documents.push(fileData);
+            } catch (error) {
+                showError(fileInput, `Failed to process work document: ${error.message}`);
+                throw new Error(`Failed to process work document: ${error.message}`);
+            }
+        }
+        
+        workHistoryData.push(workData);
+    }
+    
+    console.log('Collected work history data:', JSON.stringify(workHistoryData, null, 2));
+    return workHistoryData;
+}
+
+async function collectStepData(stepId) {
+    const step = document.getElementById(stepId);
+    const data = {};
+    const inputs = step.querySelectorAll('input:not([type="file"]):not([disabled]), select:not([disabled])');
+    inputs.forEach(input => {
+        if (input.id) {
+            data[input.id] = input.value;
+        } else if (input.name) {
+            data[input.name] = input.value;
+        }
+    });
+    if (stepId === 'step-1') {
+        const aadharFileInput = document.getElementById('documentUpload');
+        const panFileInput = document.getElementById('documentUpload2');
+        if (aadharFileInput.files[0]) {
+            try {
+                data.documents = data.documents || {};
+                data.documents.aadhar = await fileToBase64(aadharFileInput.files[0]);
+            } catch (error) {
+                throw new Error(`Failed to process Aadhar document: ${error.message}`);
+            }
+        }
+        if (panFileInput.files[0]) {
+            try {
+                data.documents = data.documents || {};
+                data.documents.pan = await fileToBase64(panFileInput.files[0]);
+            } catch (error) {
+                throw new Error(`Failed to process PAN document: ${error.message}`);
+            }
+        }
+    }
+    if (stepId === 'step-2') {
+        data.education = await collectEducationData(step);
+    }
+    if (stepId === 'step-4') {
+        data.workHistory = await collectWorkHistoryData(step);
+    }
+    return data;
+}
+
+// Navigation
+function navigateToStep(direction) {
+    const currentStepId = steps[currentStep];
+    if (direction === 'next') {
+        if (!validateStep(currentStepId)) {
+            const firstInvalid = document.querySelector(`#${currentStepId} .invalid`);
+            if (firstInvalid) firstInvalid.focus();
+            return false;
+        }
+        collectStepData(currentStepId).then(stepData => {
+            Object.assign(employeeData, stepData);
+            document.getElementById(currentStepId).style.display = "none";
+            currentStep++;
+            document.getElementById(steps[currentStep]).style.display = "block";
+        }).catch(error => {
+            console.error('Error collecting step data:', error);
+            alert(`An error occurred while processing your data: ${error.message}`);
+        });
+    } else if (direction === 'back') {
+        document.getElementById(currentStepId).style.display = "none";
+        currentStep--;
+        document.getElementById(steps[currentStep]).style.display = "block";
+    }
+}
+
+// Add entry with limits
+function addEntry(buttonId, containerId, templateSelector, maxEntries) {
+    const container = document.getElementById(containerId);
+    const template = container.querySelector(templateSelector);
+    const button = document.getElementById(buttonId);
+
+    button.addEventListener('click', () => {
+        const entries = container.querySelectorAll(templateSelector);
+        if (entries.length >= maxEntries) {
+            alert(`Maximum ${maxEntries} entries allowed`);
+            button.disabled = true;
+            return;
+        }
+
+        const newEntry = template.cloneNode(true);
+        const inputs = newEntry.querySelectorAll('input, select');
+        inputs.forEach(input => {
+            input.value = '';
+            input.classList.remove('invalid');
+            const nextSibling = input.nextElementSibling;
+            if (nextSibling && nextSibling.classList.contains('error-message')) {
+                nextSibling.remove();
+            }
+            if (input.type === 'file') {
+                if (templateSelector === '.education-entry') {
+                    input.className = 'educationUpload';
+                } else if (templateSelector === '.work-history-entry') {
+                    input.className = 'workDocumentUpload';
+                }
+            }
+        });
+        container.appendChild(newEntry);
+
+        // Update button state after adding a new entry
+        const updatedEntries = container.querySelectorAll(templateSelector);
+        button.disabled = updatedEntries.length >= maxEntries;
+
+        const removeBtn = newEntry.querySelector('.remove-section');
+        if (removeBtn) {
+            removeBtn.addEventListener('click', () => {
+                const currentEntries = container.querySelectorAll(templateSelector);
+                if (currentEntries.length > 1) {
+                    newEntry.remove();
+                    // Update button state after removing an entry
+                    const remainingEntries = container.querySelectorAll(templateSelector);
+                    button.disabled = remainingEntries.length >= maxEntries;
+                } else {
+                    alert('At least one entry is required');
+                }
+            });
+        }
+
+        const newInputs = newEntry.querySelectorAll('input, select');
+        newInputs.forEach(input => {
+            input.addEventListener('input', () => validateField(input));
+            input.addEventListener('blur', () => validateField(input));
+        });
+    });
+}
+
+// Input filters with space validation
+function filterTextWithSpaces(event) {
+    const input = event.target;
+    let value = input.value;
+    
+    value = value.replace(/[^A-Za-z\s]/g, '');
+    if (value.startsWith(' ')) {
+        value = value.trimStart();
+    }
+    value = value.replace(/\s{2,}/g, ' ');
+    input.value = value;
+}
+
+function filterReasonForLeaving(event) {
+    const input = event.target;
+    let value = input.value;
+    
+    value = value.replace(/[^A-Za-z0-9\s\.\,\-\:\;\"\']]/g, '');
+    if (value.startsWith(' ')) {
+        value = value.trimStart();
+    }
+    value = value.replace(/\s{2,}/g, ' ');
+    input.value = value;
+}
+
+function filterStreetInput(event) {
+    const input = event.target;
+    let value = input.value;
+    
+    value = value.replace(/[^A-Za-z0-9\s\,\.\/-:]/g, '');
+    if (value.startsWith(' ')) {
+        value = value.trimStart();
+    }
+    value = value.replace(/\s{2,}/g, ' ');
+    input.value = value;
+}
+
+function filterNumericInput(event) {
+    const input = event.target;
+    input.value = input.value.replace(/[^0-9]/g, '');
+}
+
+function filterMobileInput(event) {
+    const input = event.target;
+    let value = input.value.replace(/[^0-9]/g, '');
+    input.value = value;
+}
+
+function validateIFSCCode(event) {
+    const input = event.target;
+    input.value = input.value.toUpperCase().replace(/[^A-Z0-9]/g, '');
+}
+
+function validatePAN(input) {
+    input.value = input.value.toUpperCase().replace(/[^A-Z0-9]/g, '');
+}
+
+// Initialize
+document.addEventListener('DOMContentLoaded', function() {
+    document.getElementById(steps[currentStep]).style.display = "block";
+    addEntry('addEducation', 'educationContainer', '.education-entry', 5);
+    addEntry('addWorkHistory', 'workHistoryContainer', '.work-history-entry', 10);
+    addAddressCopyCheckbox();
+
+    const allInputs = document.querySelectorAll('input, select');
+    allInputs.forEach(input => {
+        input.addEventListener('input', () => validateField(input));
+        input.addEventListener('blur', () => validateField(input));
+    });
+
+    document.getElementById('next-button').addEventListener('click', () => navigateToStep('next'));
+    document.getElementById('next-button-2').addEventListener('click', () => navigateToStep('next'));
+    document.getElementById('next-button-3').addEventListener('click', () => navigateToStep('next'));
+    document.getElementById('next-button-4').addEventListener('click', () => navigateToStep('next'));
+
+    document.getElementById('back-button-2').addEventListener('click', () => navigateToStep('back'));
+    document.getElementById('back-button-3').addEventListener('click', () => navigateToStep('back'));
+    document.getElementById('back-button-4').addEventListener('click', () => navigateToStep('back'));
+    document.getElementById('back-button-5').addEventListener('click', () => navigateToStep('back'));
+
+    // Experience type handler
+    const experienceTypeSelect = document.getElementById('experience-type');
+    experienceTypeSelect.addEventListener('change', function() {
+        const isFresher = this.value === 'fresher';
+        toggleWorkHistoryFields(isFresher);
+        if (isFresher) {
+            employeeData.experienceType = 'fresher';
+        } else {
+            employeeData.experienceType = 'experienced';
+        }
+    });
+
+    // Submit form to backend
+    document.getElementById('submit-button').addEventListener('click', async function(e) {
+        e.preventDefault();
+        try {
+            if (!validateStep(steps[currentStep])) {
+                const firstInvalid = document.querySelector(`#${steps[currentStep]} .invalid`);
+                if (firstInvalid) {
+                    firstInvalid.focus();
+                    alert('Please correct the errors in the form before submitting.');
+                }
+                return;
+            }
+
+            // Collect final step data
+            const finalStepData = await collectStepData(steps[currentStep]);
+            Object.assign(employeeData, finalStepData);
+
+            // Ensure all previous steps' data is collected
+            for (let i = 0; i < steps.length - 1; i++) {
+                if (!employeeData[steps[i]]) {
+                    const stepData = await collectStepData(steps[i]);
+                    Object.assign(employeeData, stepData);
+                }
+            }
+
+            // Prepare FormData for API submission
+            const formData = new FormData();
+            formData.append('name', employeeData.name);
+            formData.append('fatherName', employeeData['father-name']);
+            formData.append('dob', employeeData.dob);
+            formData.append('email', employeeData.email);
+            formData.append('altEmail', employeeData['alt-email']);
+            formData.append('mobile', employeeData.mobile);
+            formData.append('altMobile', employeeData['alt-mobile']);
+            formData.append('aadhar', employeeData.aadhar);
+            formData.append('pan', employeeData.pan);
+            formData.append('permanentStreet', employeeData['permanent-street']);
+            formData.append('permanentCity', employeeData['permanent-city']);
+            formData.append('permanentState', employeeData['permanent-state']);
+            formData.append('permanentZipcode', employeeData['permanent-zipcode']);
+            formData.append('permanentCountry', employeeData['permanent-country']);
+            formData.append('currentStreet', employeeData['current-street']);
+            formData.append('currentCity', employeeData['current-city']);
+            formData.append('currentState', employeeData['current-state']);
+            formData.append('currentZipcode', employeeData['current-zipcode']);
+            formData.append('currentCountry', employeeData['current-country']);
+            formData.append('accountHolderName', employeeData['account-holder-name']);
+            formData.append('bankName', employeeData['bank-name']);
+            formData.append('accountNumber', employeeData['account-number']);
+            formData.append('ifscCode', employeeData['ifsc-code']);
+            formData.append('bankBranch', employeeData['bank-branch']);
+            formData.append('accountType', employeeData['account-type']);
+            formData.append('status', employeeData.status);
+            formData.append('department', employeeData.department);
+            formData.append('submissionDate', employeeData.submissionDate);
+
+            // Append Aadhar document
+            if (employeeData.documents.aadhar) {
+                const aadharBlob = base64ToBlob(employeeData.documents.aadhar.data, employeeData.documents.aadhar.type);
+                formData.append('aadharDocument', aadharBlob, employeeData.documents.aadhar.name);
+            }
+
+            // Append PAN document
+            if (employeeData.documents.pan) {
+                const panBlob = base64ToBlob(employeeData.documents.pan.data, employeeData.documents.pan.type);
+                formData.append('panDocument', panBlob, employeeData.documents.pan.name);
+            }
+
+            // Append education data and certificates
+            if (employeeData.education && employeeData.education.length > 0) {
+                employeeData.education.forEach(edu => {
+                    if (edu.certificate) {
+                        const certBlob = base64ToBlob(edu.certificate.data, edu.certificate.type);
+                        formData.append('educationCertificates', certBlob, edu.certificate.name);
+                    }
+                });
+                // Append education data without certificates
+                formData.append('education', JSON.stringify(employeeData.education.map(edu => ({
+                    level: edu.level,
+                    stream: edu.stream,
+                    institution: edu.institution,
+                    board: edu.board,
+                    yearOfPassing: edu.yearOfPassing,
+                    percentage: edu.percentage,
+                }))));
+            }
+
+            // Append work history data and documents
+            if (employeeData.workHistory && employeeData.workHistory.length > 0) {
+                if (employeeData.workHistory[0].experienceType !== 'fresher') {
+                    employeeData.workHistory.forEach(work => {
+                        if (work._documents && work._documents.length > 0) {
+                            work._documents.forEach(doc => {
+                                const docBlob = base64ToBlob(doc.data, doc.type);
+                                formData.append('workDocuments', docBlob, doc.name);
+                            });
+                        }
+                    });
+                }
+                // Append work history data with document placeholders
+                formData.append('workHistory', JSON.stringify(employeeData.workHistory.map(work => ({
+                    experienceType: work.experienceType,
+                    companyName: work.companyName,
+                    designation: work.designation,
+                    employmentPeriod: work.employmentPeriod,
+                    location: work.location,
+                    reasonForLeaving: work.reasonForLeaving,
+                    documents: work.documents // Include placeholders
+                }))));
+            }
+
+            // Estimate total file size
+            let totalFileSize = 0;
+            if (employeeData.documents.aadhar) {
+                totalFileSize += employeeData.documents.aadhar.size;
+            }
+            if (employeeData.documents.pan) {
+                totalFileSize += employeeData.documents.pan.size;
+            }
+            if (employeeData.education) {
+                employeeData.education.forEach(edu => {
+                    if (edu.certificate) {
+                        totalFileSize += edu.certificate.size;
+                    }
+                });
+            }
+            if (employeeData.workHistory && employeeData.workHistory[0]?.experienceType !== 'fresher') {
+                employeeData.workHistory.forEach(work => {
+                    if (work._documents) {
+                        work._documents.forEach(doc => {
+                            totalFileSize += doc.size;
+                        });
+                    }
+                });
+            }
+
+            // Check total file size (limit to MB)
+            if (totalFileSize > 10 * 1024 * 1024) {
+                throw new Error('Total size of uploaded files exceeds 10MB.');
+            }
+
+            // Log FormData for debugging
+            console.log('Submitting FormData with workHistory:', JSON.stringify(employeeData.workHistory, null, 2));
+
+            // Submit to backend
+            const response = await fetch('http://localhost:3000/api/employees', {
+                method: 'POST',
+                body: formData,
+            });
+            const result = await response.json();
+
+            if (!response.ok) {
+                throw new Error(result.error || 'Submission failed. Please try again.');
+            }
+
+            alert('Onboarding form submitted successfully!');
+            // Reset form and reload page
+            employeeData = {
+                status: 'pending',
+                department: 'Not Assigned',
+                submissionDate: new Date().toISOString(),
+                documents: {
+                    aadhar: null,
+                    pan: null,
+                    education: [],
+                    work: []
+                }
+            };
+            // Clear file inputs
+            document.querySelectorAll('input[type="file"]').forEach(input => {
+                input.value = '';
+            });
+            location.reload();
+        } catch (error) {
+            console.error('Error submitting form:', error);
+            alert(`Error: ${error.message}`);
+        }
+    });
+});
+</script>
+    </body>
+</html>
