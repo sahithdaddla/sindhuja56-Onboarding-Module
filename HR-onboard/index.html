@@ -627,7 +627,7 @@
                 const controller = new AbortController();
                 const timeoutId = setTimeout(() => controller.abort(), 5000);
 
-                const response = await fetch('http://localhost:3000/api/employees', {
+                const response = await fetch('http://13.60.189.220:3100/api/employees', {
                     method: 'GET',
                     headers: { 'Content-Type': 'application/json' },
                     signal: controller.signal
@@ -671,9 +671,9 @@
 
                 let userMessage = 'Failed to load employee data: ';
                 if (error.name === 'AbortError') {
-                    userMessage += 'Request timed out. The server at http://localhost:3000 may be down or slow.';
+                    userMessage += 'Request timed out. The server at http://13.60.189.220:3100 may be down or slow.';
                 } else if (error.message.includes('Failed to fetch')) {
-                    userMessage += 'Cannot connect to the server. Ensure the backend is running at http://localhost:3000.';
+                    userMessage += 'Cannot connect to the server. Ensure the backend is running at http://13.60.189.220:3100.';
                 } else if (error.message.includes('HTTP 500')) {
                     userMessage += 'Server error. Check the backend logs for database or server issues.';
                 } else if (error.message.includes('Invalid response format')) {
@@ -692,7 +692,7 @@
                 const controller = new AbortController();
                 const timeoutId = setTimeout(() => controller.abort(), 5000);
 
-                const response = await fetch(`http://localhost:3000/api/employees/${employeeId}`, {
+                const response = await fetch(`http://13.60.189.220:3100/api/employees/${employeeId}`, {
                     method: 'GET',
                     headers: { 'Content-Type': 'application/json' },
                     signal: controller.signal
@@ -970,7 +970,7 @@
                 const controller = new AbortController();
                 const timeoutId = setTimeout(() => controller.abort(), 5000);
 
-                const response = await fetch(`http://localhost:3000/api/employees/${employeeId}/status`, {
+                const response = await fetch(`http://13.60.189.220:3100/api/employees/${employeeId}/status`, {
                     method: 'PATCH',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ status: newStatus, status_updated: true }),
@@ -1025,7 +1025,7 @@
                     const controller = new AbortController();
                     const timeoutId = setTimeout(() => controller.abort(), 5000);
 
-                    const response = await fetch('http://localhost:3000/api/employees', {
+                    const response = await fetch('http://13.60.189.220:3100/api/employees', {
                         method: 'DELETE',
                         headers: { 'Content-Type': 'application/json' },
                         signal: controller.signal
